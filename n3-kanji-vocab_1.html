@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>한자로 묶은 JLPT N3 단어장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F1ECE0;
+    --paper-card: #EAE3D2;
+    --ink: #221F1A;
+    --ink-soft: #6B6455;
+    --indigo: #24425B;
+    --indigo-deep: #16293A;
+    --hanko: #A8392F;
+    --hanko-soft: #C97F76;
+    --line: #D9D0BC;
+    --line-strong: #C3B89E;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1B1815;
+      --paper-card: #232019;
+      --ink: #EDE7D9;
+      --ink-soft: #A79E8C;
+      --indigo: #7FA6C4;
+      --indigo-deep: #A9C6DC;
+      --hanko: #D9776C;
+      --hanko-soft: #8A4A42;
+      --line: #3A352C;
+      --line-strong: #4A4436;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1B1815;
+    --paper-card: #232019;
+    --ink: #EDE7D9;
+    --ink-soft: #A79E8C;
+    --indigo: #7FA6C4;
+    --indigo-deep: #A9C6DC;
+    --hanko: #D9776C;
+    --hanko-soft: #8A4A42;
+    --line: #3A352C;
+    --line-strong: #4A4436;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+  }
+  .jp { font-family: "Noto Sans JP", "Noto Sans KR", serif; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 100px;
+  }
+
+  header.top {
+    margin-bottom: 28px;
+  }
+  header.top .eyebrow {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-family: "Noto Sans JP", serif;
+    font-weight: 700;
+    font-size: clamp(26px, 5vw, 34px);
+    margin: 0 0 12px;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+  }
+  h1 .stamp {
+    color: var(--hanko);
+  }
+  header.top p.desc {
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin: 0;
+    max-width: 62ch;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+  .tabbtn {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 15px;
+    color: var(--ink-soft);
+    background: none;
+    border: none;
+    padding: 10px 4px 12px;
+    margin-right: 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+  .tabbtn.active {
+    color: var(--ink);
+    font-weight: 700;
+    border-bottom-color: var(--hanko);
+  }
+
+  .controls {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    background: var(--paper);
+    padding: 18px 0 14px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    z-index: 5;
+  }
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .search-row svg { flex: none; opacity: 0.55; }
+  #search {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 16px;
+    color: var(--ink);
+    font-family: inherit;
+    min-width: 0;
+  }
+  #search::placeholder { color: var(--ink-soft); }
+  .stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .stats strong { color: var(--indigo); font-weight: 700; }
+  .rightctrls { display: flex; gap: 14px; }
+  #resetBtn, #sortBtn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-family: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    padding: 0;
+  }
+  #resetBtn:hover, #sortBtn:hover { color: var(--hanko); }
+
+  #groups { margin-top: 8px; }
+
+  .group {
+    display: grid;
+    grid-template-columns: 76px 1fr;
+    gap: 18px;
+    padding: 26px 0;
+    border-top: 1px solid var(--line);
+  }
+  .group:first-child { border-top: none; }
+
+  .stampbox {
+    width: 76px;
+    height: 76px;
+    border: 2px solid var(--hanko);
+    color: var(--hanko);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Noto Sans JP", serif;
+    font-size: 38px;
+    font-weight: 500;
+    flex: none;
+  }
+  .grouphead {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .grouphead .label {
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .grouphead .label .meaning {
+    color: var(--indigo);
+    font-weight: 500;
+  }
+  .grouphead .count {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-left: auto;
+  }
+
+  .readingpills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .pill {
+    font-size: 13px;
+    padding: 2px 9px;
+    border: 1px solid var(--line-strong);
+    color: var(--indigo);
+  }
+
+  .cluster { margin-top: 14px; }
+  .cluster:first-child { margin-top: 0; }
+  .clusterhead {
+    font-size: 14px;
+    color: var(--indigo);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .clusterhead .n {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* ---- theme tab ---- */
+  .theme-section { margin-bottom: 46px; }
+  .theme-section:last-child { margin-bottom: 10px; }
+  .theme-section h2 {
+    font-family: "Noto Sans JP", serif;
+    font-weight: 500;
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  .theme-section .sub {
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin: 0 0 16px;
+    max-width: 60ch;
+  }
+  .cat-block { margin-bottom: 22px; }
+  .cat-block:last-child { margin-bottom: 0; }
+  .cat-label {
+    font-size: 13px;
+    color: var(--indigo);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .antonym-row {
+    display: grid;
+    grid-template-columns: 1fr 28px 1fr;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+  }
+  .antonym-row:first-child { border-top: none; }
+  .antonym-side { display: flex; flex-direction: column; }
+  .antonym-side.right { text-align: right; }
+  .antonym-side .w { font-family: "Noto Sans JP", serif; font-size: 17px; }
+  .antonym-side .r { font-family: "Noto Sans JP", serif; font-size: 12px; color: var(--ink-soft); }
+  .antonym-side .m { font-size: 13px; margin-top: 2px; }
+  .antonym-mid {
+    text-align: center;
+    color: var(--line-strong);
+    font-size: 16px;
+  }
+  .antonym-row.done .antonym-side { opacity: 0.45; }
+
+  table.family { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.family th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--ink-soft);
+    font-size: 12px;
+    padding: 0 0 8px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  table.family td { padding: 9px 8px 9px 0; border-top: 1px solid var(--line); vertical-align: top; }
+  table.family tr:first-child td { border-top: none; }
+  table.family .jpword { font-family: "Noto Sans JP", serif; font-size: 15px; }
+  table.family .r { color: var(--ink-soft); font-size: 12px; }
+
+  .dategrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    gap: 8px;
+  }
+  .datecell {
+    border: 1px solid var(--line);
+    padding: 8px 6px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .datecell.done { background: var(--paper-card); opacity: 0.55; }
+  .datecell .num { font-size: 12px; color: var(--ink-soft); }
+  .datecell .r { font-family: "Noto Sans JP", serif; font-size: 15px; margin-top: 2px; }
+  .datecell.irregular .r { color: var(--hanko); }
+  .datenote { font-size: 12px; color: var(--ink-soft); margin-top: 10px; }
+
+  table.reltime { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+  table.reltime th, table.reltime td {
+    border: 1px solid var(--line);
+    padding: 8px 4px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  table.reltime th { font-weight: 500; color: var(--ink-soft); font-size: 12px; background: var(--paper-card); }
+  table.reltime td .w { font-family: "Noto Sans JP", serif; font-size: 14px; display:block; }
+  table.reltime td .r { font-family: "Noto Sans JP", serif; font-size: 11px; color: var(--ink-soft); display:block; }
+  table.reltime td .m { font-size: 11px; color: var(--ink-soft); display:block; margin-top:2px; }
+  table.reltime td.rowlabel { background: var(--paper-card); font-size: 12px; color: var(--ink-soft); }
+
+  @media (max-width: 480px) {
+    .antonym-side .w { font-size: 15px; }
+    table.reltime { font-size: 11px; }
+    table.reltime td .w { font-size: 12px; }
+  }
+
+  table.words {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  table.words tr { border-top: 1px solid var(--line); }
+  table.words tr:first-child { border-top: none; }
+  table.words td {
+    padding: 9px 0;
+    vertical-align: top;
+  }
+  td.wordcell {
+    font-family: "Noto Sans JP", serif;
+    font-size: 18px;
+    white-space: nowrap;
+    padding-right: 14px;
+    width: 1%;
+  }
+  td.wordcell .hl { color: var(--hanko); }
+  td.readingcell {
+    color: var(--ink-soft);
+    font-family: "Noto Sans JP", serif;
+    font-size: 14px;
+    white-space: nowrap;
+    padding-right: 14px;
+    width: 1%;
+  }
+  td.meaningcell { width: 100%; }
+  td.checkcell {
+    text-align: right;
+    padding-left: 10px;
+    width: 1%;
+  }
+  input[type="checkbox"] {
+    width: 19px;
+    height: 19px;
+    accent-color: var(--indigo);
+    cursor: pointer;
+  }
+  tr.done td.wordcell,
+  tr.done td.readingcell,
+  tr.done td.meaningcell {
+    color: var(--ink-soft);
+    text-decoration: line-through;
+    text-decoration-color: var(--line-strong);
+  }
+  tr.done td.wordcell .hl { color: var(--hanko-soft); }
+
+  .empty {
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 60px 0;
+    font-size: 15px;
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  @media (max-width: 480px) {
+    .group { grid-template-columns: 56px 1fr; gap: 12px; }
+    .stampbox { width: 56px; height: 56px; font-size: 28px; }
+    .group td.readingcell { display: none; }
+    .group td.wordcell { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>JLPT N3 <span class="stamp jp">単語帳</span></h1>
+  </header>
+
+  <div class="tabs">
+    <button class="tabbtn active" data-tab="kanji" type="button">한자로 묶기</button>
+    <button class="tabbtn" data-tab="theme" type="button">테마별 단어</button>
+  </div>
+
+  <div id="tab-kanji" class="tabpanel">
+    <div class="controls">
+      <div class="search-row">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="search" type="text" placeholder="한자, 단어, 발음, 뜻으로 검색 (예: 実, じつ, 현실)" autocomplete="off">
+      </div>
+      <div class="stats">
+        <span><strong id="doneCount">0</strong> / <span id="totalCount">0</span>개 암기 완료</span>
+        <span class="rightctrls">
+          <button id="sortBtn" type="button">가나다순 보기</button>
+          <button id="resetBtn" type="button">체크 초기화</button>
+        </span>
+      </div>
+    </div>
+
+    <div id="groups"></div>
+    <div class="empty" id="emptyMsg" style="display:none;">검색 결과가 없어요.</div>
+
+    <footer>단어 앞부분에 색이 들어간 글자가 이 그룹의 기준 한자예요. 체크는 이 브라우저에만 저장돼요.</footer>
+  </div>
+
+  <div id="tab-theme" class="tabpanel" hidden>
+
+    <div class="theme-section">
+      <h2>몸 &amp; 신체 부위</h2>
+      <table class="words" id="bodyTable"></table>
+    </div>
+
+    <div class="theme-section">
+      <h2>날짜 읽기 (1일 ~ 31일)</h2>
+      <div class="dategrid" id="dateGrid"></div>
+      <p class="datenote">색이 들어간 날짜는 불규칙하게 읽는 날짜예요. 나머지는 전부 [숫자+じゅう]+[일의 자리]+にち 패턴이에요.</p>
+    </div>
+
+    <div class="theme-section">
+      <h2>그제・어제・오늘・내일・모레 — 일주월년표</h2>
+      <p class="sub">일본어 수업에서 가장 먼저 배우는 그 표예요. 세로로 외우면 훨씬 잘 붙어요.</p>
+      <table class="reltime" id="relTimeTable"></table>
+      <p class="datenote" id="everyNote"></p>
+    </div>
+
+    <div class="theme-section">
+      <h2>헷갈리기 쉬운 반대말</h2>
+      <p class="sub">동사</p>
+      <div id="antonymVerbs"></div>
+      <p class="sub" style="margin-top:20px;">형용사 · な형용사</p>
+      <div id="antonymAdj"></div>
+    </div>
+
+    <div class="theme-section">
+      <h2>요일</h2>
+      <table class="words" id="weekdayTable"></table>
+    </div>
+
+    <div class="theme-section">
+      <h2>우리 가족 vs 남의 가족</h2>
+      <p class="sub">내 가족을 남에게 말할 때(겸양)와 남의 가족을 부를 때(존경)의 호칭이 달라요.</p>
+      <table class="family" id="familyTable">
+        <thead><tr><th>가족</th><th>내 가족 (겸양)</th><th>남의 가족 (존경)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="theme-section">
+      <h2>계절 &amp; 하루 중 시간대</h2>
+      <table class="words" id="seasonTable"></table>
+    </div>
+
+    <div class="theme-section">
+      <h2>헷갈리기 쉬운 부사</h2>
+      <p class="sub">마침내・그러니까・절대 같은, 뜻은 알아도 서로 헷갈리는 부사들을 묶었어요.</p>
+      <div id="adverbSection"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script type="application/json" id="rawdata">
+[{"k":"人","kr":"인","meaning":"사람","clusters":[{"r":"じん","words":[{"w":"詩人","reading":"しじん","kr":"시인"},{"w":"人工","reading":"じんこう","kr":"인공"},{"w":"人種","reading":"じんしゅ","kr":"인종"},{"w":"人生","reading":"じんせい","kr":"인생"},{"w":"人物","reading":"じんぶつ","kr":"인물"},{"w":"人類","reading":"じんるい","kr":"인류"},{"w":"成人","reading":"せいじん","kr":"성인"},{"w":"個人","reading":"こじん","kr":"개인"},{"w":"名人","reading":"めいじん","kr":"명인"},{"w":"友人","reading":"ゆうじん","kr":"우인"},{"w":"老人","reading":"ろうじん","kr":"노인"},{"w":"故人","reading":"こじん","kr":"고인"},{"w":"美人","reading":"びじん","kr":"미인"},{"w":"夫人","reading":"ふじん","kr":"부인"},{"w":"婦人","reading":"ふじん","kr":"부인"}]},{"r":"にん","words":[{"w":"商人","reading":"しょうにん","kr":"상인"},{"w":"他人","reading":"たにん","kr":"타인"},{"w":"人気","reading":"にんき","kr":"인기"},{"w":"人間","reading":"にんげん","kr":"인간"},{"w":"犯人","reading":"はんにん","kr":"범인"},{"w":"本人","reading":"ほんにん","kr":"본인"}]},{"r":"びと","words":[{"w":"恋人","reading":"こいびと","kr":"연인"}]},{"r":"ひと","words":[{"w":"一人一人","reading":"ひとりひとり","kr":"일인일인"}]}],"count":23},{"k":"一","kr":"일","meaning":"하나","clusters":[{"r":"いっ","words":[{"w":"一家","reading":"いっか","kr":"일가"},{"w":"一種","reading":"いっしゅ","kr":"일종"},{"w":"一瞬","reading":"いっしゅん","kr":"일순"},{"w":"一生","reading":"いっしょう","kr":"일생"},{"w":"一層","reading":"いっそう","kr":"일층"},{"w":"一体","reading":"いったい","kr":"일체"},{"w":"一致","reading":"いっち","kr":"일치"},{"w":"一般","reading":"いっぱん","kr":"일반"},{"w":"一方","reading":"いっぽう","kr":"일방"},{"w":"一帯","reading":"いったい","kr":"일대"}]},{"r":"いち","words":[{"w":"一時","reading":"いちじ","kr":"일시"},{"w":"万一","reading":"まんいち","kr":"만일"}]},{"r":"いつ","words":[{"w":"唯一","reading":"ゆいいつ","kr":"유일"},{"w":"同一","reading":"どういつ","kr":"동일"}]},{"r":"ひと","words":[{"w":"一言","reading":"ひとこと","kr":"일언"},{"w":"一人一人","reading":"ひとりひとり","kr":"일인일인"}]}],"count":16},{"k":"大","kr":"대","meaning":"크다","clusters":[{"r":"だい","words":[{"w":"重大","reading":"じゅうだい","kr":"중대"},{"w":"偉大","reading":"いだい","kr":"위대"},{"w":"拡大","reading":"かくだい","kr":"확대"},{"w":"巨大","reading":"きょだい","kr":"거대"},{"w":"大臣","reading":"だいじん","kr":"대신"},{"w":"大統領","reading":"だいとうりょう","kr":"대통령"},{"w":"大部分","reading":"だいぶぶん","kr":"대부분"},{"w":"莫大","reading":"ばくだい","kr":"막대"}]},{"r":"たい","words":[{"w":"大会","reading":"たいかい","kr":"대회"},{"w":"大気","reading":"たいき","kr":"대기"},{"w":"大使","reading":"たいし","kr":"대사"},{"w":"大戦","reading":"たいせん","kr":"대전"},{"w":"大半","reading":"たいはん","kr":"대반"},{"w":"大陸","reading":"たいりく","kr":"대륙"}]},{"r":"おお","words":[{"w":"大家","reading":"おおや","kr":"대가"}]}],"count":15},{"k":"物","kr":"물","meaning":"물건","clusters":[{"r":"ぶつ","words":[{"w":"植物","reading":"しょくぶつ","kr":"식물"},{"w":"人物","reading":"じんぶつ","kr":"인물"},{"w":"生物","reading":"せいぶつ","kr":"생물"},{"w":"博物館","reading":"はくぶつかん","kr":"박물관"},{"w":"物理","reading":"ぶつり","kr":"물리"}]},{"r":"もつ","words":[{"w":"食物","reading":"しょくもつ","kr":"식물"},{"w":"書物","reading":"しょもつ","kr":"서물"},{"w":"穀物","reading":"こくもつ","kr":"곡물"},{"w":"作物","reading":"さくもつ","kr":"작물"}]},{"r":"もの","words":[{"w":"物音","reading":"ものおと","kr":"물음"},{"w":"物語","reading":"ものがたり","kr":"물어"},{"w":"物事","reading":"ものごと","kr":"물사"},{"w":"本物","reading":"ほんもの","kr":"본물"}]},{"r":"ぶっ","words":[{"w":"物価","reading":"ぶっか","kr":"물가"},{"w":"物質","reading":"ぶっしつ","kr":"물질"}]}],"count":15},{"k":"中","kr":"중","meaning":"가운데","clusters":[{"r":"ちゅう","words":[{"w":"集中","reading":"しゅうちゅう","kr":"집중"},{"w":"最中","reading":"さいちゅう","kr":"최중"},{"w":"夢中","reading":"むちゅう","kr":"몽중"},{"w":"中央","reading":"ちゅうおう","kr":"중앙"},{"w":"中学","reading":"ちゅうがく","kr":"중학"},{"w":"中古","reading":"ちゅうこ","kr":"중고"},{"w":"中止","reading":"ちゅうし","kr":"중지"},{"w":"中心","reading":"ちゅうしん","kr":"중심"},{"w":"日中","reading":"にっちゅう","kr":"일중"},{"w":"熱中","reading":"ねっちゅう","kr":"열중"}]},{"r":"なか","words":[{"w":"夜中","reading":"よなか","kr":"야중"},{"w":"中身","reading":"なかみ","kr":"중신"},{"w":"中味","reading":"なかみ","kr":"중미"}]},{"r":null,"words":[{"w":"年中","reading":"ねんじゅう","kr":"연중"}]}],"count":14},{"k":"学","kr":"학","meaning":"배우다","clusters":[{"r":"がく","words":[{"w":"奨学金","reading":"しょうがくきん","kr":"장학금"},{"w":"進学","reading":"しんがく","kr":"진학"},{"w":"化学","reading":"かがく","kr":"화학"},{"w":"学者","reading":"がくしゃ","kr":"학자"},{"w":"学習","reading":"がくしゅう","kr":"학습"},{"w":"学問","reading":"がくもん","kr":"학문"},{"w":"語学","reading":"ごがく","kr":"어학"},{"w":"留学","reading":"りゅうがく","kr":"유학"},{"w":"学歴","reading":"がくれき","kr":"학력"},{"w":"中学","reading":"ちゅうがく","kr":"중학"},{"w":"通学","reading":"つうがく","kr":"통학"},{"w":"哲学","reading":"てつがく","kr":"철학"},{"w":"退学","reading":"たいがく","kr":"퇴학"}]},{"r":"がっ","words":[{"w":"学期","reading":"がっき","kr":"학기"}]}],"count":14},{"k":"気","kr":"기","meaning":"기운","clusters":[{"r":"き","words":[{"w":"活気","reading":"かっき","kr":"활기"},{"w":"気温","reading":"きおん","kr":"기온"},{"w":"気候","reading":"きこう","kr":"기후"},{"w":"気体","reading":"きたい","kr":"기체"},{"w":"気味","reading":"きみ","kr":"기미"},{"w":"景気","reading":"けいき","kr":"경기"},{"w":"勇気","reading":"ゆうき","kr":"용기"},{"w":"陽気","reading":"ようき","kr":"양기"},{"w":"大気","reading":"たいき","kr":"대기"},{"w":"人気","reading":"にんき","kr":"인기"},{"w":"雰囲気","reading":"ふんいき","kr":"분위기"},{"w":"磁気","reading":"じき","kr":"자기"}]},{"r":"け","words":[{"w":"湿気","reading":"しっけ","kr":"습기"}]}],"count":13},{"k":"行","kr":"행","meaning":"가다","clusters":[{"r":"こう","words":[{"w":"実行","reading":"じっこう","kr":"실행"},{"w":"行動","reading":"こうどう","kr":"행동"},{"w":"流行","reading":"りゅうこう","kr":"유행"},{"w":"刊行","reading":"かんこう","kr":"간행"},{"w":"慣行","reading":"かんこう","kr":"관행"},{"w":"決行","reading":"けっこう","kr":"결행"},{"w":"通行","reading":"つうこう","kr":"통행"},{"w":"発行","reading":"はっこう","kr":"발행"},{"w":"飛行","reading":"ひこう","kr":"비행"},{"w":"進行","reading":"しんこう","kr":"진행"},{"w":"先行","reading":"せんこう","kr":"선행"},{"w":"非行","reading":"ひこう","kr":"비행"}]},{"r":"ぎょう","words":[{"w":"行儀","reading":"ぎょうぎ","kr":"행의"}]}],"count":13},{"k":"地","kr":"지","meaning":"땅","clusters":[{"r":"ち","words":[{"w":"地位","reading":"ちい","kr":"지위"},{"w":"地域","reading":"ちいき","kr":"지역"},{"w":"地下","reading":"ちか","kr":"지하"},{"w":"地球","reading":"ちきゅう","kr":"지구"},{"w":"地区","reading":"ちく","kr":"지구"},{"w":"地平線","reading":"ちへいせん","kr":"지평선"},{"w":"地方","reading":"ちほう","kr":"지방"},{"w":"土地","reading":"とち","kr":"토지"}]},{"r":"じ","words":[{"w":"地味","reading":"じみ","kr":"지미"},{"w":"意地悪","reading":"いじわる","kr":"의지악"},{"w":"生地","reading":"きじ","kr":"생지"},{"w":"意地","reading":"いじ","kr":"의지"}]}],"count":12},{"k":"金","kr":"금","meaning":"쇠","clusters":[{"r":"きん","words":[{"w":"借金","reading":"しゃっきん","kr":"차금"},{"w":"奨学金","reading":"しょうがくきん","kr":"장학금"},{"w":"税金","reading":"ぜいきん","kr":"세금"},{"w":"金額","reading":"きんがく","kr":"금액"},{"w":"金庫","reading":"きんこ","kr":"금고"},{"w":"金銭","reading":"きんせん","kr":"금전"},{"w":"金属","reading":"きんぞく","kr":"금속"},{"w":"金融","reading":"きんゆう","kr":"금융"},{"w":"現金","reading":"げんきん","kr":"현금"},{"w":"料金","reading":"りょうきん","kr":"요금"},{"w":"代金","reading":"だいきん","kr":"대금"},{"w":"貯金","reading":"ちょきん","kr":"저금"}]}],"count":12},{"k":"体","kr":"체","meaning":"몸","clusters":[{"r":"たい","words":[{"w":"重体","reading":"じゅうたい","kr":"중체"},{"w":"身体","reading":"しんたい","kr":"신체"},{"w":"一体","reading":"いったい","kr":"일체"},{"w":"気体","reading":"きたい","kr":"기체"},{"w":"具体","reading":"ぐたい","kr":"구체"},{"w":"全体","reading":"ぜんたい","kr":"전체"},{"w":"体育","reading":"たいいく","kr":"체육"},{"w":"体温","reading":"たいおん","kr":"체온"},{"w":"体重","reading":"たいじゅう","kr":"체중"},{"w":"団体","reading":"だんたい","kr":"단체"},{"w":"字体","reading":"じたい","kr":"자체"},{"w":"正体","reading":"しょうたい","kr":"정체"}]}],"count":12},{"k":"手","kr":"수","meaning":"손","clusters":[{"r":"しゅ","words":[{"w":"手術","reading":"しゅじゅつ","kr":"수술"},{"w":"手段","reading":"しゅだん","kr":"수단"},{"w":"助手","reading":"じょしゅ","kr":"조수"},{"w":"握手","reading":"あくしゅ","kr":"악수"},{"w":"歌手","reading":"かしゅ","kr":"가수"},{"w":"選手","reading":"せんしゅ","kr":"선수"},{"w":"拍手","reading":"はくしゅ","kr":"박수"}]},{"r":"て","words":[{"w":"相手","reading":"あいて","kr":"상수"},{"w":"手品","reading":"てじな","kr":"수품"},{"w":"手間","reading":"てま","kr":"수간"},{"w":"苦手","reading":"にがて","kr":"고수"}]},{"r":"で","words":[{"w":"派手","reading":"はで","kr":"파수"}]}],"count":12},{"k":"事","kr":"사","meaning":"일","clusters":[{"r":"じ","words":[{"w":"事件","reading":"じけん","kr":"사건"},{"w":"事実","reading":"じじつ","kr":"사실"},{"w":"事情","reading":"じじょう","kr":"사정"},{"w":"家事","reading":"かじ","kr":"가사"},{"w":"記事","reading":"きじ","kr":"기사"},{"w":"刑事","reading":"けいじ","kr":"형사"},{"w":"知事","reading":"ちじ","kr":"지사"},{"w":"無事","reading":"ぶじ","kr":"무사"}]},{"r":"ごと","words":[{"w":"見事","reading":"みごと","kr":"견사"},{"w":"物事","reading":"ものごと","kr":"물사"},{"w":"出来事","reading":"できごと","kr":"출래사"}]}],"count":11},{"k":"生","kr":"생","meaning":"나다","clusters":[{"r":"せい","words":[{"w":"人生","reading":"じんせい","kr":"인생"},{"w":"生長","reading":"せいちょう","kr":"생장"},{"w":"生年月日","reading":"せいねんがっぴ","kr":"생년월일"},{"w":"生物","reading":"せいぶつ","kr":"생물"},{"w":"生命","reading":"せいめい","kr":"생명"},{"w":"生理","reading":"せいり","kr":"생리"}]},{"r":"しょう","words":[{"w":"一生","reading":"いっしょう","kr":"일생"},{"w":"生涯","reading":"しょうがい","kr":"생애"}]},{"r":"き","words":[{"w":"生地","reading":"きじ","kr":"생지"}]},{"r":"じょう","words":[{"w":"誕生","reading":"たんじょう","kr":"탄생"}]},{"r":null,"words":[{"w":"芝生","reading":"しばふ","kr":"지생"}]}],"count":11},{"k":"理","kr":"리","meaning":"다스리다","clusters":[{"r":"り","words":[{"w":"修理","reading":"しゅうり","kr":"수리"},{"w":"処理","reading":"しょり","kr":"처리"},{"w":"心理","reading":"しんり","kr":"심리"},{"w":"整理","reading":"せいり","kr":"정리"},{"w":"管理","reading":"かんり","kr":"관리"},{"w":"理解","reading":"りかい","kr":"이해"},{"w":"理想","reading":"りそう","kr":"이상"},{"w":"代理","reading":"だいり","kr":"대리"},{"w":"物理","reading":"ぶつり","kr":"물리"},{"w":"真理","reading":"しんり","kr":"진리"},{"w":"生理","reading":"せいり","kr":"생리"}]}],"count":11},{"k":"年","kr":"년","meaning":"해","clusters":[{"r":"ねん","words":[{"w":"少年","reading":"しょうねん","kr":"소년"},{"w":"青年","reading":"せいねん","kr":"청년"},{"w":"生年月日","reading":"せいねんがっぴ","kr":"생년월일"},{"w":"年間","reading":"ねんかん","kr":"연간"},{"w":"年中","reading":"ねんじゅう","kr":"연중"},{"w":"年代","reading":"ねんだい","kr":"연대"},{"w":"年齢","reading":"ねんれい","kr":"연령"},{"w":"成年","reading":"せいねん","kr":"성년"},{"w":"年鑑","reading":"ねんかん","kr":"연감"}]},{"r":"とし","words":[{"w":"年月","reading":"としつき","kr":"연월"},{"w":"年寄","reading":"としより","kr":"연기"}]}],"count":11},{"k":"不","kr":"불","meaning":"아니다","clusters":[{"r":"ふ","words":[{"w":"不安","reading":"ふあん","kr":"불안"},{"w":"不可","reading":"ふか","kr":"불가"},{"w":"不幸","reading":"ふこう","kr":"불행"},{"w":"不思議","reading":"ふしぎ","kr":"불사의"},{"w":"不自由","reading":"ふじゆう","kr":"부자유"},{"w":"不正","reading":"ふせい","kr":"부정"},{"w":"不足","reading":"ふそく","kr":"부족"},{"w":"不通","reading":"ふつう","kr":"불통"},{"w":"不平","reading":"ふへい","kr":"불평"},{"w":"不満","reading":"ふまん","kr":"불만"},{"w":"不利","reading":"ふり","kr":"불리"}]}],"count":11},{"k":"日","kr":"일","meaning":"날","clusters":[{"r":"にち","words":[{"w":"今日","reading":"こんにち","kr":"금일"},{"w":"明後日","reading":"みょうごにち","kr":"명후일"},{"w":"日常","reading":"にちじょう","kr":"일상"}]},{"r":"にっ","words":[{"w":"日光","reading":"にっこう","kr":"일광"},{"w":"日中","reading":"にっちゅう","kr":"일중"},{"w":"日本","reading":"にっぽん","kr":"일본"}]},{"r":"ぴ","words":[{"w":"生年月日","reading":"せいねんがっぴ","kr":"생년월일"}]},{"r":"び","words":[{"w":"曜日","reading":"ようび","kr":"요일"}]},{"r":"じつ","words":[{"w":"先日","reading":"せんじつ","kr":"선일"}]},{"r":"ひ","words":[{"w":"日付","reading":"ひづけ","kr":"일부"}]}],"count":10},{"k":"期","kr":"기","meaning":"기약하다","clusters":[{"r":"き","words":[{"w":"時期","reading":"じき","kr":"시기"},{"w":"延期","reading":"えんき","kr":"연기"},{"w":"学期","reading":"がっき","kr":"학기"},{"w":"期間","reading":"きかん","kr":"기간"},{"w":"期限","reading":"きげん","kr":"기한"},{"w":"期待","reading":"きたい","kr":"기대"},{"w":"予期","reading":"よき","kr":"예기"},{"w":"長期","reading":"ちょうき","kr":"장기"},{"w":"定期","reading":"ていき","kr":"정기"}]}],"count":9},{"k":"実","kr":"실","meaning":"열매","clusters":[{"r":"じつ","words":[{"w":"事実","reading":"じじつ","kr":"사실"},{"w":"実現","reading":"じつげん","kr":"실현"},{"w":"実力","reading":"じつりょく","kr":"실력"},{"w":"確実","reading":"かくじつ","kr":"확실"},{"w":"現実","reading":"げんじつ","kr":"현실"}]},{"r":"じっ","words":[{"w":"実験","reading":"じっけん","kr":"실험"},{"w":"実行","reading":"じっこう","kr":"실행"},{"w":"実際","reading":"じっさい","kr":"실제"},{"w":"実施","reading":"じっし","kr":"실시"}]}],"count":9},{"k":"現","kr":"현","meaning":"나타나다","clusters":[{"r":"げん","words":[{"w":"実現","reading":"じつげん","kr":"실현"},{"w":"現金","reading":"げんきん","kr":"현금"},{"w":"現在","reading":"げんざい","kr":"현재"},{"w":"現実","reading":"げんじつ","kr":"현실"},{"w":"現象","reading":"げんしょう","kr":"현상"},{"w":"現状","reading":"げんじょう","kr":"현상"},{"w":"現代","reading":"げんだい","kr":"현대"},{"w":"現場","reading":"げんば","kr":"현장"},{"w":"表現","reading":"ひょうげん","kr":"표현"}]}],"count":9},{"k":"正","kr":"정","meaning":"바르다","clusters":[{"r":"せい","words":[{"w":"修正","reading":"しゅうせい","kr":"수정"},{"w":"正確","reading":"せいかく","kr":"정확"},{"w":"正式","reading":"せいしき","kr":"정식"},{"w":"公正","reading":"こうせい","kr":"공정"},{"w":"不正","reading":"ふせい","kr":"부정"},{"w":"正規","reading":"せいき","kr":"정규"}]},{"r":"しょう","words":[{"w":"正午","reading":"しょうご","kr":"정오"},{"w":"正直","reading":"しょうじき","kr":"정직"},{"w":"正体","reading":"しょうたい","kr":"정체"}]}],"count":9},{"k":"間","kr":"간","meaning":"사이","clusters":[{"r":"かん","words":[{"w":"瞬間","reading":"しゅんかん","kr":"순간"},{"w":"間隔","reading":"かんかく","kr":"간격"},{"w":"期間","reading":"きかん","kr":"기간"},{"w":"年間","reading":"ねんかん","kr":"연간"}]},{"r":"ま","words":[{"w":"居間","reading":"いま","kr":"거간"},{"w":"手間","reading":"てま","kr":"수간"},{"w":"仲間","reading":"なかま","kr":"중간"}]},{"r":"けん","words":[{"w":"世間","reading":"せけん","kr":"세간"}]},{"r":"げん","words":[{"w":"人間","reading":"にんげん","kr":"인간"}]}],"count":9},{"k":"用","kr":"용","meaning":"쓰다","clusters":[{"r":"よう","words":[{"w":"使用","reading":"しよう","kr":"사용"},{"w":"信用","reading":"しんよう","kr":"신용"},{"w":"引用","reading":"いんよう","kr":"인용"},{"w":"活用","reading":"かつよう","kr":"활용"},{"w":"器用","reading":"きよう","kr":"기용"},{"w":"用心","reading":"ようじん","kr":"용심"},{"w":"適用","reading":"てきよう","kr":"적용"},{"w":"費用","reading":"ひよう","kr":"비용"},{"w":"私用","reading":"しよう","kr":"사용"}]}],"count":9},{"k":"子","kr":"자","meaning":"아들","clusters":[{"r":"し","words":[{"w":"女子","reading":"じょし","kr":"여자"},{"w":"菓子","reading":"かし","kr":"과자"},{"w":"男子","reading":"だんし","kr":"남자"},{"w":"調子","reading":"ちょうし","kr":"조자"},{"w":"電子","reading":"でんし","kr":"전자"}]},{"r":"ご","words":[{"w":"双子","reading":"ふたご","kr":"쌍자"},{"w":"迷子","reading":"まいご","kr":"미자"}]},{"r":"じ","words":[{"w":"王子","reading":"おうじ","kr":"왕자"}]},{"r":"す","words":[{"w":"様子","reading":"ようす","kr":"양자"}]}],"count":9},{"k":"家","kr":"가","meaning":"집","clusters":[{"r":"か","words":[{"w":"一家","reading":"いっか","kr":"일가"},{"w":"画家","reading":"がか","kr":"화가"},{"w":"家具","reading":"かぐ","kr":"가구"},{"w":"家事","reading":"かじ","kr":"가사"},{"w":"国家","reading":"こっか","kr":"국가"},{"w":"作家","reading":"さっか","kr":"작가"},{"w":"農家","reading":"のうか","kr":"농가"}]},{"r":"や","words":[{"w":"大家","reading":"おおや","kr":"대가"},{"w":"家賃","reading":"やちん","kr":"가임"}]}],"count":9},{"k":"通","kr":"통","meaning":"통하다","clusters":[{"r":"つう","words":[{"w":"共通","reading":"きょうつう","kr":"공통"},{"w":"通過","reading":"つうか","kr":"통과"},{"w":"通貨","reading":"つうか","kr":"통화"},{"w":"通学","reading":"つうがく","kr":"통학"},{"w":"通勤","reading":"つうきん","kr":"통근"},{"w":"通行","reading":"つうこう","kr":"통행"},{"w":"通信","reading":"つうしん","kr":"통신"},{"w":"通訳","reading":"つうやく","kr":"통역"},{"w":"不通","reading":"ふつう","kr":"불통"}]}],"count":9},{"k":"発","kr":"발","meaning":"피다","clusters":[{"r":"はっ","words":[{"w":"発見","reading":"はっけん","kr":"발견"},{"w":"発行","reading":"はっこう","kr":"발행"},{"w":"発車","reading":"はっしゃ","kr":"발차"},{"w":"発射","reading":"はっしゃ","kr":"발사"},{"w":"発達","reading":"はったつ","kr":"발달"},{"w":"発展","reading":"はってん","kr":"발전"},{"w":"発表","reading":"はっぴょう","kr":"발표"}]},{"r":"はつ","words":[{"w":"爆発","reading":"ばくはつ","kr":"폭발"},{"w":"発明","reading":"はつめい","kr":"발명"}]}],"count":9},{"k":"成","kr":"성","meaning":"이루다","clusters":[{"r":"せい","words":[{"w":"賛成","reading":"さんせい","kr":"찬성"},{"w":"成功","reading":"せいこう","kr":"성공"},{"w":"成人","reading":"せいじん","kr":"성인"},{"w":"成績","reading":"せいせき","kr":"성적"},{"w":"成長","reading":"せいちょう","kr":"성장"},{"w":"完成","reading":"かんせい","kr":"완성"},{"w":"構成","reading":"こうせい","kr":"구성"},{"w":"成年","reading":"せいねん","kr":"성년"}]}],"count":8},{"k":"動","kr":"동","meaning":"움직이다","clusters":[{"r":"どう","words":[{"w":"自動","reading":"じどう","kr":"자동"},{"w":"移動","reading":"いどう","kr":"이동"},{"w":"活動","reading":"かつどう","kr":"활동"},{"w":"感動","reading":"かんどう","kr":"감동"},{"w":"行動","reading":"こうどう","kr":"행동"},{"w":"異動","reading":"いどう","kr":"이동"},{"w":"動詞","reading":"どうし","kr":"동사"},{"w":"動揺","reading":"どうよう","kr":"동요"}]}],"count":8},{"k":"重","kr":"중","meaning":"무겁다","clusters":[{"r":"じゅう","words":[{"w":"重視","reading":"じゅうし","kr":"중시"},{"w":"重体","reading":"じゅうたい","kr":"중체"},{"w":"重大","reading":"じゅうだい","kr":"중대"},{"w":"重要","reading":"じゅうよう","kr":"중요"},{"w":"体重","reading":"たいじゅう","kr":"체중"}]},{"r":"ちょう","words":[{"w":"慎重","reading":"しんちょう","kr":"신중"},{"w":"貴重","reading":"きちょう","kr":"귀중"},{"w":"尊重","reading":"そんちょう","kr":"존중"}]}],"count":8},{"k":"場","kr":"장","meaning":"마당","clusters":[{"r":"ば","words":[{"w":"市場","reading":"いちば","kr":"시장"},{"w":"現場","reading":"げんば","kr":"현장"},{"w":"工場","reading":"こうば","kr":"공장"},{"w":"立場","reading":"たちば","kr":"입장"},{"w":"場面","reading":"ばめん","kr":"장면"}]},{"r":"じょう","words":[{"w":"出場","reading":"しゅつじょう","kr":"출장"},{"w":"劇場","reading":"げきじょう","kr":"극장"},{"w":"入場","reading":"にゅうじょう","kr":"입장"}]}],"count":8},{"k":"意","kr":"의","meaning":"뜻","clusters":[{"r":"い","words":[{"w":"意外","reading":"いがい","kr":"의외"},{"w":"意思","reading":"いし","kr":"의사"},{"w":"意志","reading":"いし","kr":"의지"},{"w":"意識","reading":"いしき","kr":"의식"},{"w":"意地悪","reading":"いじわる","kr":"의지악"},{"w":"敬意","reading":"けいい","kr":"경의"},{"w":"意地","reading":"いじ","kr":"의지"},{"w":"得意","reading":"とくい","kr":"득의"}]}],"count":8},{"k":"器","kr":"기","meaning":"그릇","clusters":[{"r":"き","words":[{"w":"楽器","reading":"がっき","kr":"낙기"},{"w":"器械","reading":"きかい","kr":"기계"},{"w":"器用","reading":"きよう","kr":"기용"},{"w":"容器","reading":"ようき","kr":"용기"},{"w":"器官","reading":"きかん","kr":"기관"},{"w":"計器","reading":"けいき","kr":"계기"},{"w":"武器","reading":"ぶき","kr":"무기"},{"w":"磁器","reading":"じき","kr":"자기"}]}],"count":8},{"k":"作","kr":"작","meaning":"짓다","clusters":[{"r":"さ","words":[{"w":"作法","reading":"さほう","kr":"작법"},{"w":"作業","reading":"さぎょう","kr":"작업"},{"w":"操作","reading":"そうさ","kr":"조작"}]},{"r":"さく","words":[{"w":"作品","reading":"さくひん","kr":"작품"},{"w":"作物","reading":"さくもつ","kr":"작물"}]},{"r":"さっ","words":[{"w":"作家","reading":"さっか","kr":"작가"},{"w":"作曲","reading":"さっきょく","kr":"작곡"}]}],"count":7},{"k":"自","kr":"자","meaning":"스스로","clusters":[{"r":"じ","words":[{"w":"自殺","reading":"じさつ","kr":"자살"},{"w":"自身","reading":"じしん","kr":"자신"},{"w":"自動","reading":"じどう","kr":"자동"},{"w":"自慢","reading":"じまん","kr":"자만"},{"w":"不自由","reading":"ふじゆう","kr":"부자유"},{"w":"自己","reading":"じこ","kr":"자기"}]},{"r":"し","words":[{"w":"自然","reading":"しぜん","kr":"자연"}]}],"count":7},{"k":"出","kr":"출","meaning":"나가다","clusters":[{"r":"しゅつ","words":[{"w":"支出","reading":"ししゅつ","kr":"지출"},{"w":"出場","reading":"しゅつじょう","kr":"출장"},{"w":"外出","reading":"がいしゅつ","kr":"외출"},{"w":"提出","reading":"ていしゅつ","kr":"제출"}]},{"r":"しゅっ","words":[{"w":"出身","reading":"しゅっしん","kr":"출신"},{"w":"出版","reading":"しゅっぱん","kr":"출판"}]},{"r":"で","words":[{"w":"出来事","reading":"できごと","kr":"출래사"}]}],"count":7},{"k":"身","kr":"신","meaning":"몸","clusters":[{"r":"しん","words":[{"w":"自身","reading":"じしん","kr":"자신"},{"w":"出身","reading":"しゅっしん","kr":"출신"},{"w":"身体","reading":"しんたい","kr":"신체"},{"w":"身長","reading":"しんちょう","kr":"신장"},{"w":"全身","reading":"ぜんしん","kr":"전신"},{"w":"独身","reading":"どくしん","kr":"독신"}]},{"r":"み","words":[{"w":"中身","reading":"なかみ","kr":"중신"}]}],"count":7},{"k":"度","kr":"도","meaning":"정도","clusters":[{"r":"ど","words":[{"w":"湿度","reading":"しつど","kr":"습도"},{"w":"制度","reading":"せいど","kr":"제도"},{"w":"温度","reading":"おんど","kr":"온도"},{"w":"速度","reading":"そくど","kr":"속도"},{"w":"態度","reading":"たいど","kr":"태도"},{"w":"程度","reading":"ていど","kr":"정도"},{"w":"適度","reading":"てきど","kr":"적도"}]}],"count":7},{"k":"明","kr":"명","meaning":"밝다","clusters":[{"r":"めい","words":[{"w":"証明","reading":"しょうめい","kr":"증명"},{"w":"明確","reading":"めいかく","kr":"명확"},{"w":"発明","reading":"はつめい","kr":"발명"},{"w":"文明","reading":"ぶんめい","kr":"문명"},{"w":"照明","reading":"しょうめい","kr":"조명"},{"w":"声明","reading":"せいめい","kr":"성명"}]},{"r":"みょう","words":[{"w":"明後日","reading":"みょうごにち","kr":"명후일"}]}],"count":7},{"k":"食","kr":"식","meaning":"먹다","clusters":[{"r":"しょく","words":[{"w":"食卓","reading":"しょくたく","kr":"식탁"},{"w":"食品","reading":"しょくひん","kr":"식품"},{"w":"食物","reading":"しょくもつ","kr":"식물"},{"w":"食欲","reading":"しょくよく","kr":"식욕"},{"w":"食料","reading":"しょくりょう","kr":"식료"},{"w":"食糧","reading":"しょくりょう","kr":"식량"},{"w":"昼食","reading":"ちゅうしょく","kr":"주식"}]}],"count":7},{"k":"心","kr":"심","meaning":"마음","clusters":[{"r":"しん","words":[{"w":"心臓","reading":"しんぞう","kr":"심장"},{"w":"心理","reading":"しんり","kr":"심리"},{"w":"感心","reading":"かんしん","kr":"감심"},{"w":"関心","reading":"かんしん","kr":"관심"},{"w":"決心","reading":"けっしん","kr":"결심"},{"w":"中心","reading":"ちゅうしん","kr":"중심"}]},{"r":"じん","words":[{"w":"用心","reading":"ようじん","kr":"용심"}]}],"count":7},{"k":"記","kr":"기","meaning":"기록하다","clusters":[{"r":"き","words":[{"w":"暗記","reading":"あんき","kr":"암기"},{"w":"記憶","reading":"きおく","kr":"기억"},{"w":"記事","reading":"きじ","kr":"기사"},{"w":"記者","reading":"きしゃ","kr":"기자"},{"w":"記入","reading":"きにゅう","kr":"기입"},{"w":"記念","reading":"きねん","kr":"기념"},{"w":"記録","reading":"きろく","kr":"기록"}]}],"count":7},{"k":"会","kr":"회","meaning":"모이다","clusters":[{"r":"かい","words":[{"w":"会員","reading":"かいいん","kr":"회원"},{"w":"会計","reading":"かいけい","kr":"회계"},{"w":"会合","reading":"かいごう","kr":"회합"},{"w":"議会","reading":"ぎかい","kr":"의회"},{"w":"国会","reading":"こっかい","kr":"국회"},{"w":"大会","reading":"たいかい","kr":"대회"},{"w":"都会","reading":"とかい","kr":"도회"}]}],"count":7},{"k":"機","kr":"기","meaning":"틀","clusters":[{"r":"き","words":[{"w":"機械","reading":"きかい","kr":"기계"},{"w":"機関","reading":"きかん","kr":"기관"},{"w":"機嫌","reading":"きげん","kr":"기혐"},{"w":"機能","reading":"きのう","kr":"기능"},{"w":"機構","reading":"きこう","kr":"기구"},{"w":"契機","reading":"けいき","kr":"계기"},{"w":"有機","reading":"ゆうき","kr":"유기"}]}],"count":7},{"k":"同","kr":"동","meaning":"한가지","clusters":[{"r":"どう","words":[{"w":"共同","reading":"きょうどう","kr":"공동"},{"w":"同一","reading":"どういつ","kr":"동일"},{"w":"同時","reading":"どうじ","kr":"동시"},{"w":"同様","reading":"どうよう","kr":"동양"},{"w":"同僚","reading":"どうりょう","kr":"동료"},{"w":"同士","reading":"どうし","kr":"동사"},{"w":"同志","reading":"どうし","kr":"동지"}]}],"count":7},{"k":"当","kr":"당","meaning":"마땅하다","clusters":[{"r":"とう","words":[{"w":"見当","reading":"けんとう","kr":"견당"},{"w":"相当","reading":"そうとう","kr":"상당"},{"w":"担当","reading":"たんとう","kr":"담당"},{"w":"当時","reading":"とうじ","kr":"당시"},{"w":"弁当","reading":"べんとう","kr":"변당"},{"w":"当然","reading":"とうぜん","kr":"당연"}]},{"r":null,"words":[{"w":"本当","reading":"ほんと","kr":"본당"}]}],"count":7},{"k":"国","kr":"국","meaning":"나라","clusters":[{"r":"こく","words":[{"w":"国語","reading":"こくご","kr":"국어"},{"w":"国籍","reading":"こくせき","kr":"국적"},{"w":"国民","reading":"こくみん","kr":"국민"},{"w":"全国","reading":"ぜんこく","kr":"전국"}]},{"r":"こっ","words":[{"w":"国家","reading":"こっか","kr":"국가"},{"w":"国会","reading":"こっかい","kr":"국회"},{"w":"国境","reading":"こっきょう","kr":"국경"}]}],"count":7},{"k":"情","kr":"정","meaning":"정","clusters":[{"r":"じょう","words":[{"w":"事情","reading":"じじょう","kr":"사정"},{"w":"情報","reading":"じょうほう","kr":"정보"},{"w":"愛情","reading":"あいじょう","kr":"애정"},{"w":"感情","reading":"かんじょう","kr":"감정"},{"w":"友情","reading":"ゆうじょう","kr":"우정"},{"w":"表情","reading":"ひょうじょう","kr":"표정"}]}],"count":6},{"k":"然","kr":"연","meaning":"그러하다","clusters":[{"r":"ぜん","words":[{"w":"自然","reading":"しぜん","kr":"자연"},{"w":"偶然","reading":"ぐうぜん","kr":"우연"},{"w":"依然","reading":"いぜん","kr":"의연"},{"w":"突然","reading":"とつぜん","kr":"돌연"},{"w":"当然","reading":"とうぜん","kr":"당연"}]},{"r":"ねん","words":[{"w":"天然","reading":"てんねん","kr":"천연"}]}],"count":6},{"k":"想","kr":"상","meaning":"생각","clusters":[{"r":"そう","words":[{"w":"思想","reading":"しそう","kr":"사상"},{"w":"感想","reading":"かんそう","kr":"감상"},{"w":"理想","reading":"りそう","kr":"이상"},{"w":"連想","reading":"れんそう","kr":"연상"},{"w":"想像","reading":"そうぞう","kr":"상상"},{"w":"予想","reading":"よそう","kr":"예상"}]}],"count":6},{"k":"業","kr":"업","meaning":"업","clusters":[{"r":"ぎょう","words":[{"w":"失業","reading":"しつぎょう","kr":"실업"},{"w":"職業","reading":"しょくぎょう","kr":"직업"},{"w":"営業","reading":"えいぎょう","kr":"영업"},{"w":"企業","reading":"きぎょう","kr":"기업"},{"w":"作業","reading":"さぎょう","kr":"작업"},{"w":"農業","reading":"のうぎょう","kr":"농업"}]}],"count":6},{"k":"力","kr":"력","meaning":"힘","clusters":[{"r":"りょく","words":[{"w":"実力","reading":"じつりょく","kr":"실력"},{"w":"協力","reading":"きょうりょく","kr":"협력"},{"w":"強力","reading":"きょうりょく","kr":"강력"},{"w":"魅力","reading":"みりょく","kr":"매력"},{"w":"努力","reading":"どりょく","kr":"노력"},{"w":"能力","reading":"のうりょく","kr":"능력"}]}],"count":6},{"k":"本","kr":"본","meaning":"근본","clusters":[{"r":"ほん","words":[{"w":"資本","reading":"しほん","kr":"자본"},{"w":"基本","reading":"きほん","kr":"기본"},{"w":"本当","reading":"ほんと","kr":"본당"},{"w":"本人","reading":"ほんにん","kr":"본인"},{"w":"本物","reading":"ほんもの","kr":"본물"}]},{"r":"ぽん","words":[{"w":"日本","reading":"にっぽん","kr":"일본"}]}],"count":6},{"k":"要","kr":"요","meaning":"요긴하다","clusters":[{"r":"よう","words":[{"w":"重要","reading":"じゅうよう","kr":"중요"},{"w":"主要","reading":"しゅよう","kr":"주요"},{"w":"需要","reading":"じゅよう","kr":"수요"},{"w":"要求","reading":"ようきゅう","kr":"요구"},{"w":"要素","reading":"ようそ","kr":"요소"},{"w":"要点","reading":"ようてん","kr":"요점"}]}],"count":6},{"k":"上","kr":"상","meaning":"위","clusters":[{"r":"じょう","words":[{"w":"上京","reading":"じょうきょう","kr":"상경"},{"w":"上達","reading":"じょうたつ","kr":"상달"},{"w":"上等","reading":"じょうとう","kr":"상등"},{"w":"頂上","reading":"ちょうじょう","kr":"정상"},{"w":"上司","reading":"じょうし","kr":"상사"}]},{"r":"うえ","words":[{"w":"目上","reading":"めうえ","kr":"목상"}]}],"count":6},{"k":"品","kr":"품","meaning":"물건","clusters":[{"r":"ひん","words":[{"w":"商品","reading":"しょうひん","kr":"상품"},{"w":"賞品","reading":"しょうひん","kr":"상품"},{"w":"食品","reading":"しょくひん","kr":"식품"},{"w":"製品","reading":"せいひん","kr":"제품"},{"w":"作品","reading":"さくひん","kr":"작품"}]},{"r":"じな","words":[{"w":"手品","reading":"てじな","kr":"수품"}]}],"count":6},{"k":"料","kr":"료","meaning":"헤아리다","clusters":[{"r":"りょう","words":[{"w":"食料","reading":"しょくりょう","kr":"식료"},{"w":"給料","reading":"きゅうりょう","kr":"급료"},{"w":"材料","reading":"ざいりょう","kr":"재료"},{"w":"無料","reading":"むりょう","kr":"무료"},{"w":"料金","reading":"りょうきん","kr":"요금"},{"w":"衣料","reading":"いりょう","kr":"의료"}]}],"count":6},{"k":"書","kr":"서","meaning":"쓰다","clusters":[{"r":"しょ","words":[{"w":"書斎","reading":"しょさい","kr":"서재"},{"w":"書物","reading":"しょもつ","kr":"서물"},{"w":"書類","reading":"しょるい","kr":"서류"},{"w":"教科書","reading":"きょうかしょ","kr":"교과서"},{"w":"読書","reading":"どくしょ","kr":"독서"},{"w":"図書","reading":"としょ","kr":"도서"}]}],"count":6},{"k":"名","kr":"명","meaning":"이름","clusters":[{"r":"めい","words":[{"w":"署名","reading":"しょめい","kr":"서명"},{"w":"名刺","reading":"めいし","kr":"명자"},{"w":"名詞","reading":"めいし","kr":"명사"},{"w":"名人","reading":"めいじん","kr":"명인"},{"w":"題名","reading":"だいめい","kr":"제명"},{"w":"姓名","reading":"せいめい","kr":"성명"}]}],"count":6},{"k":"長","kr":"장","meaning":"길다","clusters":[{"r":"ちょう","words":[{"w":"身長","reading":"しんちょう","kr":"신장"},{"w":"成長","reading":"せいちょう","kr":"성장"},{"w":"生長","reading":"せいちょう","kr":"생장"},{"w":"議長","reading":"ぎちょう","kr":"의장"},{"w":"長期","reading":"ちょうき","kr":"장기"},{"w":"特長","reading":"とくちょう","kr":"특장"}]}],"count":6},{"k":"外","kr":"외","meaning":"밖","clusters":[{"r":"がい","words":[{"w":"案外","reading":"あんがい","kr":"안외"},{"w":"意外","reading":"いがい","kr":"의외"},{"w":"海外","reading":"かいがい","kr":"해외"},{"w":"外交","reading":"がいこう","kr":"외교"},{"w":"外出","reading":"がいしゅつ","kr":"외출"},{"w":"例外","reading":"れいがい","kr":"예외"}]}],"count":6},{"k":"定","kr":"정","meaning":"정하다","clusters":[{"r":"てい","words":[{"w":"安定","reading":"あんてい","kr":"안정"},{"w":"仮定","reading":"かてい","kr":"가정"},{"w":"決定","reading":"けってい","kr":"결정"},{"w":"定期","reading":"ていき","kr":"정기"},{"w":"否定","reading":"ひてい","kr":"부정"}]},{"r":"じょう","words":[{"w":"勘定","reading":"かんじょう","kr":"감정"}]}],"count":6},{"k":"者","kr":"자","meaning":"사람","clusters":[{"r":"しゃ","words":[{"w":"学者","reading":"がくしゃ","kr":"학자"},{"w":"記者","reading":"きしゃ","kr":"기자"},{"w":"後者","reading":"こうしゃ","kr":"후자"},{"w":"前者","reading":"ぜんしゃ","kr":"전자"},{"w":"著者","reading":"ちょしゃ","kr":"저자"}]},{"r":"じゃ","words":[{"w":"患者","reading":"かんじゃ","kr":"환자"}]}],"count":6},{"k":"能","kr":"능","meaning":"능하다","clusters":[{"r":"のう","words":[{"w":"可能","reading":"かのう","kr":"가능"},{"w":"機能","reading":"きのう","kr":"기능"},{"w":"才能","reading":"さいのう","kr":"재능"},{"w":"有能","reading":"ゆうのう","kr":"유능"},{"w":"知能","reading":"ちのう","kr":"지능"},{"w":"能力","reading":"のうりょく","kr":"능력"}]}],"count":6},{"k":"感","kr":"감","meaning":"느끼다","clusters":[{"r":"かん","words":[{"w":"感覚","reading":"かんかく","kr":"감각"},{"w":"感謝","reading":"かんしゃ","kr":"감사"},{"w":"感情","reading":"かんじょう","kr":"감정"},{"w":"感心","reading":"かんしん","kr":"감심"},{"w":"感想","reading":"かんそう","kr":"감상"},{"w":"感動","reading":"かんどう","kr":"감동"}]}],"count":6},{"k":"議","kr":"의","meaning":"의논하다","clusters":[{"r":"ぎ","words":[{"w":"議員","reading":"ぎいん","kr":"의원"},{"w":"議会","reading":"ぎかい","kr":"의회"},{"w":"議長","reading":"ぎちょう","kr":"의장"},{"w":"議論","reading":"ぎろん","kr":"의론"},{"w":"協議","reading":"きょうぎ","kr":"협의"},{"w":"不思議","reading":"ふしぎ","kr":"불사의"}]}],"count":6},{"k":"代","kr":"대","meaning":"대신하다","clusters":[{"r":"だい","words":[{"w":"近代","reading":"きんだい","kr":"근대"},{"w":"現代","reading":"げんだい","kr":"현대"},{"w":"代金","reading":"だいきん","kr":"대금"},{"w":"代表","reading":"だいひょう","kr":"대표"},{"w":"代理","reading":"だいり","kr":"대리"},{"w":"年代","reading":"ねんだい","kr":"연대"}]}],"count":6},{"k":"語","kr":"어","meaning":"말씀","clusters":[{"r":"ご","words":[{"w":"言語","reading":"げんご","kr":"언어"},{"w":"語学","reading":"ごがく","kr":"어학"},{"w":"国語","reading":"こくご","kr":"국어"},{"w":"語句","reading":"ごく","kr":"어구"},{"w":"単語","reading":"たんご","kr":"단어"}]},{"r":null,"words":[{"w":"物語","reading":"ものがたり","kr":"물어"}]}],"count":6},{"k":"平","kr":"평","meaning":"평평하다","clusters":[{"r":"へい","words":[{"w":"公平","reading":"こうへい","kr":"공평"},{"w":"地平線","reading":"ちへいせん","kr":"지평선"},{"w":"不平","reading":"ふへい","kr":"불평"},{"w":"平均","reading":"へいきん","kr":"평균"},{"w":"平和","reading":"へいわ","kr":"평화"}]},{"r":"びょう","words":[{"w":"平等","reading":"びょうどう","kr":"평등"}]}],"count":6},{"k":"予","kr":"예","meaning":"나","clusters":[{"r":"よ","words":[{"w":"予期","reading":"よき","kr":"예기"},{"w":"予算","reading":"よさん","kr":"예산"},{"w":"予測","reading":"よそく","kr":"예측"},{"w":"予報","reading":"よほう","kr":"예보"},{"w":"予防","reading":"よぼう","kr":"예방"},{"w":"予想","reading":"よそう","kr":"예상"}]}],"count":6},{"k":"時","kr":"시","meaning":"때","clusters":[{"r":"じ","words":[{"w":"時期","reading":"じき","kr":"시기"},{"w":"時刻","reading":"じこく","kr":"시각"},{"w":"一時","reading":"いちじ","kr":"일시"},{"w":"当時","reading":"とうじ","kr":"당시"},{"w":"同時","reading":"どうじ","kr":"동시"}]}],"count":5},{"k":"支","kr":"지","meaning":"지탱하다","clusters":[{"r":"し","words":[{"w":"支給","reading":"しきゅう","kr":"지급"},{"w":"支出","reading":"ししゅつ","kr":"지출"},{"w":"支店","reading":"してん","kr":"지점"},{"w":"支配","reading":"しはい","kr":"지배"},{"w":"支払","reading":"しはらい","kr":"지불"}]}],"count":5},{"k":"味","kr":"미","meaning":"맛","clusters":[{"r":"み","words":[{"w":"地味","reading":"じみ","kr":"지미"},{"w":"気味","reading":"きみ","kr":"기미"},{"w":"味方","reading":"みかた","kr":"미방"},{"w":"加味","reading":"かみ","kr":"가미"},{"w":"中味","reading":"なかみ","kr":"중미"}]}],"count":5},{"k":"視","kr":"시","meaning":"보다","clusters":[{"r":"し","words":[{"w":"重視","reading":"じゅうし","kr":"중시"},{"w":"無視","reading":"むし","kr":"무시"},{"w":"近視","reading":"きんし","kr":"근시"},{"w":"視覚","reading":"しかく","kr":"시각"},{"w":"視点","reading":"してん","kr":"시점"}]}],"count":5},{"k":"調","kr":"조","meaning":"고르다","clusters":[{"r":"ちょう","words":[{"w":"順調","reading":"じゅんちょう","kr":"순조"},{"w":"強調","reading":"きょうちょう","kr":"강조"},{"w":"協調","reading":"きょうちょう","kr":"협조"},{"w":"調査","reading":"ちょうさ","kr":"조사"},{"w":"調子","reading":"ちょうし","kr":"조자"}]}],"count":5},{"k":"女","kr":"녀","meaning":"여자","clusters":[{"r":"じょ","words":[{"w":"少女","reading":"しょうじょ","kr":"소녀"},{"w":"女王","reading":"じょおう","kr":"여왕"},{"w":"女子","reading":"じょし","kr":"여자"},{"w":"女優","reading":"じょゆう","kr":"여우"},{"w":"女史","reading":"じょし","kr":"여사"}]}],"count":5},{"k":"信","kr":"신","meaning":"믿다","clusters":[{"r":"しん","words":[{"w":"信仰","reading":"しんこう","kr":"신앙"},{"w":"信号","reading":"しんごう","kr":"신호"},{"w":"信用","reading":"しんよう","kr":"신용"},{"w":"信頼","reading":"しんらい","kr":"신뢰"},{"w":"通信","reading":"つうしん","kr":"통신"}]}],"count":5},{"k":"判","kr":"판","meaning":"판단하다","clusters":[{"r":"ばん","words":[{"w":"裁判","reading":"さいばん","kr":"재판"},{"w":"評判","reading":"ひょうばん","kr":"평판"}]},{"r":"はん","words":[{"w":"判断","reading":"はんだん","kr":"판단"},{"w":"批判","reading":"ひはん","kr":"비판"}]},{"r":"ぱん","words":[{"w":"審判","reading":"しんぱん","kr":"심판"}]}],"count":5},{"k":"計","kr":"계","meaning":"셈하다","clusters":[{"r":"けい","words":[{"w":"設計","reading":"せっけい","kr":"설계"},{"w":"会計","reading":"かいけい","kr":"회계"},{"w":"計算","reading":"けいさん","kr":"계산"},{"w":"合計","reading":"ごうけい","kr":"합계"},{"w":"計器","reading":"けいき","kr":"계기"}]}],"count":5},{"k":"合","kr":"합","meaning":"합하다","clusters":[{"r":"ごう","words":[{"w":"会合","reading":"かいごう","kr":"회합"},{"w":"合格","reading":"ごうかく","kr":"합격"},{"w":"合計","reading":"ごうけい","kr":"합계"}]},{"r":"あい","words":[{"w":"合図","reading":"あいず","kr":"합도"},{"w":"組合","reading":"くみあい","kr":"조합"}]}],"count":5},{"k":"方","kr":"방","meaning":"모","clusters":[{"r":"ほう","words":[{"w":"地方","reading":"ちほう","kr":"지방"},{"w":"方向","reading":"ほうこう","kr":"방향"},{"w":"方法","reading":"ほうほう","kr":"방법"}]},{"r":"ぽう","words":[{"w":"一方","reading":"いっぽう","kr":"일방"}]},{"r":"かた","words":[{"w":"味方","reading":"みかた","kr":"미방"}]}],"count":5},{"k":"有","kr":"유","meaning":"있다","clusters":[{"r":"ゆう","words":[{"w":"有効","reading":"ゆうこう","kr":"유효"},{"w":"有能","reading":"ゆうのう","kr":"유능"},{"w":"有利","reading":"ゆうり","kr":"유리"},{"w":"有機","reading":"ゆうき","kr":"유기"}]},{"r":"う","words":[{"w":"有無","reading":"うむ","kr":"유무"}]}],"count":5},{"k":"無","kr":"무","meaning":"없다","clusters":[{"r":"む","words":[{"w":"有無","reading":"うむ","kr":"유무"},{"w":"無視","reading":"むし","kr":"무시"},{"w":"無駄","reading":"むだ","kr":"무태"},{"w":"無料","reading":"むりょう","kr":"무료"}]},{"r":"ぶ","words":[{"w":"無事","reading":"ぶじ","kr":"무사"}]}],"count":5},{"k":"演","kr":"연","meaning":"펴다","clusters":[{"r":"えん","words":[{"w":"演技","reading":"えんぎ","kr":"연기"},{"w":"演説","reading":"えんぜつ","kr":"연설"},{"w":"演奏","reading":"えんそう","kr":"연주"},{"w":"講演","reading":"こうえん","kr":"강연"},{"w":"公演","reading":"こうえん","kr":"공연"}]}],"count":5},{"k":"様","kr":"양","meaning":"모양","clusters":[{"r":"よう","words":[{"w":"模様","reading":"もよう","kr":"모양"},{"w":"様子","reading":"ようす","kr":"양자"},{"w":"同様","reading":"どうよう","kr":"동양"},{"w":"仕様","reading":"しよう","kr":"사양"}]},{"r":"さま","words":[{"w":"王様","reading":"おうさま","kr":"왕양"}]}],"count":5},{"k":"解","kr":"해","meaning":"풀다","clusters":[{"r":"かい","words":[{"w":"解決","reading":"かいけつ","kr":"해결"},{"w":"解釈","reading":"かいしゃく","kr":"해석"},{"w":"見解","reading":"けんかい","kr":"견해"},{"w":"誤解","reading":"ごかい","kr":"오해"},{"w":"理解","reading":"りかい","kr":"이해"}]}],"count":5},{"k":"価","kr":"가","meaning":"값","clusters":[{"r":"か","words":[{"w":"価格","reading":"かかく","kr":"가격"},{"w":"価値","reading":"かち","kr":"가치"},{"w":"高価","reading":"こうか","kr":"고가"},{"w":"評価","reading":"ひょうか","kr":"평가"},{"w":"物価","reading":"ぶっか","kr":"물가"}]}],"count":5},{"k":"目","kr":"목","meaning":"눈","clusters":[{"r":"もく","words":[{"w":"科目","reading":"かもく","kr":"과목"},{"w":"目的","reading":"もくてき","kr":"목적"},{"w":"目標","reading":"もくひょう","kr":"목표"},{"w":"注目","reading":"ちゅうもく","kr":"주목"}]},{"r":"め","words":[{"w":"目上","reading":"めうえ","kr":"목상"}]}],"count":5},{"k":"全","kr":"전","meaning":"온전하다","clusters":[{"r":"ぜん","words":[{"w":"完全","reading":"かんぜん","kr":"완전"},{"w":"全員","reading":"ぜんいん","kr":"전원"},{"w":"全国","reading":"ぜんこく","kr":"전국"},{"w":"全身","reading":"ぜんしん","kr":"전신"},{"w":"全体","reading":"ぜんたい","kr":"전체"}]}],"count":5},{"k":"利","kr":"리","meaning":"이롭다","clusters":[{"r":"り","words":[{"w":"権利","reading":"けんり","kr":"권리"},{"w":"有利","reading":"ゆうり","kr":"유리"},{"w":"利益","reading":"りえき","kr":"이익"},{"w":"利口","reading":"りこう","kr":"이구"},{"w":"不利","reading":"ふり","kr":"불리"}]}],"count":5},{"k":"後","kr":"후","meaning":"뒤","clusters":[{"r":"こう","words":[{"w":"後者","reading":"こうしゃ","kr":"후자"},{"w":"後輩","reading":"こうはい","kr":"후배"},{"w":"後悔","reading":"こうかい","kr":"후회"}]},{"r":"ご","words":[{"w":"今後","reading":"こんご","kr":"금후"},{"w":"明後日","reading":"みょうごにち","kr":"명후일"}]}],"count":5},{"k":"文","kr":"문","meaning":"글월","clusters":[{"r":"もん","words":[{"w":"文句","reading":"もんく","kr":"문구"},{"w":"注文","reading":"ちゅうもん","kr":"주문"}]},{"r":"ぶん","words":[{"w":"論文","reading":"ろんぶん","kr":"논문"},{"w":"文明","reading":"ぶんめい","kr":"문명"}]},{"r":null,"words":[{"w":"文字","reading":"もじ","kr":"문자"}]}],"count":5},{"k":"分","kr":"분","meaning":"나누다","clusters":[{"r":"ぶん","words":[{"w":"余分","reading":"よぶん","kr":"여분"},{"w":"大部分","reading":"だいぶぶん","kr":"대부분"},{"w":"部分","reading":"ぶぶん","kr":"부분"},{"w":"分析","reading":"ぶんせき","kr":"분석"},{"w":"分野","reading":"ぶんや","kr":"분야"}]}],"count":5},{"k":"表","kr":"표","meaning":"겉","clusters":[{"r":"ひょう","words":[{"w":"代表","reading":"だいひょう","kr":"대표"},{"w":"表現","reading":"ひょうげん","kr":"표현"},{"w":"表情","reading":"ひょうじょう","kr":"표정"},{"w":"表面","reading":"ひょうめん","kr":"표면"}]},{"r":"ぴょう","words":[{"w":"発表","reading":"はっぴょう","kr":"발표"}]}],"count":5},{"k":"加","kr":"가","meaning":"더하다","clusters":[{"r":"か","words":[{"w":"参加","reading":"さんか","kr":"참가"},{"w":"加減","reading":"かげん","kr":"가감"},{"w":"加味","reading":"かみ","kr":"가미"},{"w":"増加","reading":"ぞうか","kr":"증가"}]}],"count":4},{"k":"主","kr":"주","meaning":"주인","clusters":[{"r":"しゅ","words":[{"w":"主義","reading":"しゅぎ","kr":"주의"},{"w":"主張","reading":"しゅちょう","kr":"주장"},{"w":"主婦","reading":"しゅふ","kr":"주부"},{"w":"主要","reading":"しゅよう","kr":"주요"}]}],"count":4},{"k":"相","kr":"상","meaning":"서로","clusters":[{"r":"そう","words":[{"w":"相続","reading":"そうぞく","kr":"상속"},{"w":"相当","reading":"そうとう","kr":"상당"}]},{"r":"しょう","words":[{"w":"首相","reading":"しゅしょう","kr":"수상"}]},{"r":null,"words":[{"w":"相手","reading":"あいて","kr":"상수"}]}],"count":4},{"k":"状","kr":"상","meaning":"형상","clusters":[{"r":"じょう","words":[{"w":"状況","reading":"じょうきょう","kr":"상황"},{"w":"症状","reading":"しょうじょう","kr":"증상"},{"w":"状態","reading":"じょうたい","kr":"상태"},{"w":"現状","reading":"げんじょう","kr":"현상"}]}],"count":4},{"k":"常","kr":"상","meaning":"항상","clusters":[{"r":"じょう","words":[{"w":"常識","reading":"じょうしき","kr":"상식"},{"w":"異常","reading":"いじょう","kr":"이상"},{"w":"日常","reading":"にちじょう","kr":"일상"},{"w":"非常","reading":"ひじょう","kr":"비상"}]}],"count":4},{"k":"少","kr":"소","meaning":"적다","clusters":[{"r":"しょう","words":[{"w":"少女","reading":"しょうじょ","kr":"소녀"},{"w":"少年","reading":"しょうねん","kr":"소년"},{"w":"減少","reading":"げんしょう","kr":"감소"},{"w":"多少","reading":"たしょう","kr":"다소"}]}],"count":4},{"k":"助","kr":"조","meaning":"돕다","clusters":[{"r":"じょ","words":[{"w":"助手","reading":"じょしゅ","kr":"조수"},{"w":"援助","reading":"えんじょ","kr":"원조"},{"w":"救助","reading":"きゅうじょ","kr":"구조"},{"w":"助詞","reading":"じょし","kr":"조사"}]}],"count":4},{"k":"優","kr":"우","meaning":"뛰어나다","clusters":[{"r":"ゆう","words":[{"w":"女優","reading":"じょゆう","kr":"여우"},{"w":"優秀","reading":"ゆうしゅう","kr":"우수"},{"w":"優勝","reading":"ゆうしょう","kr":"우승"},{"w":"俳優","reading":"はいゆう","kr":"배우"}]}],"count":4},{"k":"進","kr":"진","meaning":"나아가다","clusters":[{"r":"しん","words":[{"w":"進学","reading":"しんがく","kr":"진학"},{"w":"進歩","reading":"しんぽ","kr":"진보"},{"w":"前進","reading":"ぜんしん","kr":"전진"},{"w":"進行","reading":"しんこう","kr":"진행"}]}],"count":4},{"k":"経","kr":"경","meaning":"지나다","clusters":[{"r":"けい","words":[{"w":"神経","reading":"しんけい","kr":"신경"},{"w":"経営","reading":"けいえい","kr":"경영"},{"w":"経由","reading":"けいゆ","kr":"경유"},{"w":"経緯","reading":"けいい","kr":"경위"}]}],"count":4},{"k":"親","kr":"친","meaning":"친하다","clusters":[{"r":"しん","words":[{"w":"親戚","reading":"しんせき","kr":"친척"},{"w":"親友","reading":"しんゆう","kr":"친우"}]},{"r":"おや","words":[{"w":"父親","reading":"ちちおや","kr":"부친"},{"w":"母親","reading":"ははおや","kr":"모친"}]}],"count":4},{"k":"友","kr":"우","meaning":"벗","clusters":[{"r":"ゆう","words":[{"w":"親友","reading":"しんゆう","kr":"친우"},{"w":"友好","reading":"ゆうこう","kr":"우호"},{"w":"友情","reading":"ゆうじょう","kr":"우정"},{"w":"友人","reading":"ゆうじん","kr":"우인"}]}],"count":4},{"k":"格","kr":"격","meaning":"격식","clusters":[{"r":"かく","words":[{"w":"性格","reading":"せいかく","kr":"성격"},{"w":"価格","reading":"かかく","kr":"가격"},{"w":"合格","reading":"ごうかく","kr":"합격"},{"w":"資格","reading":"しかく","kr":"자격"}]}],"count":4},{"k":"確","kr":"확","meaning":"굳다","clusters":[{"r":"かく","words":[{"w":"正確","reading":"せいかく","kr":"정확"},{"w":"確実","reading":"かくじつ","kr":"확실"},{"w":"確認","reading":"かくにん","kr":"확인"},{"w":"明確","reading":"めいかく","kr":"명확"}]}],"count":4},{"k":"員","kr":"원","meaning":"인원","clusters":[{"r":"いん","words":[{"w":"委員","reading":"いいん","kr":"위원"},{"w":"会員","reading":"かいいん","kr":"회원"},{"w":"議員","reading":"ぎいん","kr":"의원"},{"w":"全員","reading":"ぜんいん","kr":"전원"}]}],"count":4},{"k":"退","kr":"퇴","meaning":"물러나다","clusters":[{"r":"たい","words":[{"w":"引退","reading":"いんたい","kr":"인퇴"},{"w":"退屈","reading":"たいくつ","kr":"퇴굴"},{"w":"辞退","reading":"じたい","kr":"사퇴"},{"w":"退学","reading":"たいがく","kr":"퇴학"}]}],"count":4},{"k":"温","kr":"온","meaning":"따뜻하다","clusters":[{"r":"おん","words":[{"w":"温暖","reading":"おんだん","kr":"온난"},{"w":"温度","reading":"おんど","kr":"온도"},{"w":"気温","reading":"きおん","kr":"기온"},{"w":"体温","reading":"たいおん","kr":"체온"}]}],"count":4},{"k":"決","kr":"결","meaning":"결단하다","clusters":[{"r":"けっ","words":[{"w":"決心","reading":"けっしん","kr":"결심"},{"w":"決定","reading":"けってい","kr":"결정"},{"w":"決行","reading":"けっこう","kr":"결행"}]},{"r":"けつ","words":[{"w":"解決","reading":"かいけつ","kr":"해결"}]}],"count":4},{"k":"適","kr":"적","meaning":"맞다","clusters":[{"r":"てき","words":[{"w":"快適","reading":"かいてき","kr":"쾌적"},{"w":"適切","reading":"てきせつ","kr":"적절"},{"w":"適度","reading":"てきど","kr":"적도"},{"w":"適用","reading":"てきよう","kr":"적용"}]}],"count":4},{"k":"化","kr":"화","meaning":"되다","clusters":[{"r":"か","words":[{"w":"化学","reading":"かがく","kr":"화학"},{"w":"変化","reading":"へんか","kr":"변화"},{"w":"酸化","reading":"さんか","kr":"산화"}]},{"r":"け","words":[{"w":"化粧","reading":"けしょう","kr":"화장"}]}],"count":4},{"k":"活","kr":"활","meaning":"살다","clusters":[{"r":"かつ","words":[{"w":"活動","reading":"かつどう","kr":"활동"},{"w":"活躍","reading":"かつやく","kr":"활약"},{"w":"活用","reading":"かつよう","kr":"활용"}]},{"r":"かっ","words":[{"w":"活気","reading":"かっき","kr":"활기"}]}],"count":4},{"k":"論","kr":"론","meaning":"논하다","clusters":[{"r":"ろん","words":[{"w":"議論","reading":"ぎろん","kr":"의론"},{"w":"結論","reading":"けつろん","kr":"결론"},{"w":"論争","reading":"ろんそう","kr":"논쟁"},{"w":"論文","reading":"ろんぶん","kr":"논문"}]}],"count":4},{"k":"告","kr":"고","meaning":"알리다","clusters":[{"r":"こく","words":[{"w":"警告","reading":"けいこく","kr":"경고"},{"w":"広告","reading":"こうこく","kr":"광고"},{"w":"報告","reading":"ほうこく","kr":"보고"},{"w":"申告","reading":"しんこく","kr":"신고"}]}],"count":4},{"k":"見","kr":"견","meaning":"보다","clusters":[{"r":"けん","words":[{"w":"見解","reading":"けんかい","kr":"견해"},{"w":"見当","reading":"けんとう","kr":"견당"},{"w":"発見","reading":"はっけん","kr":"발견"}]},{"r":"み","words":[{"w":"見事","reading":"みごと","kr":"견사"}]}],"count":4},{"k":"小","kr":"소","meaning":"작다","clusters":[{"r":null,"words":[{"w":"小包","reading":"こづつみ","kr":"소포"},{"w":"小麦","reading":"こむぎ","kr":"소맥"},{"w":"小屋","reading":"こや","kr":"소옥"},{"w":"小銭","reading":"こぜに","kr":"소전"}]}],"count":4},{"k":"最","kr":"최","meaning":"가장","clusters":[{"r":"さい","words":[{"w":"最高","reading":"さいこう","kr":"최고"},{"w":"最終","reading":"さいしゅう","kr":"최종"},{"w":"最中","reading":"さいちゅう","kr":"최중"},{"w":"最低","reading":"さいてい","kr":"최저"}]}],"count":4},{"k":"産","kr":"산","meaning":"낳다","clusters":[{"r":"さん","words":[{"w":"財産","reading":"ざいさん","kr":"재산"},{"w":"破産","reading":"はさん","kr":"파산"},{"w":"倒産","reading":"とうさん","kr":"도산"}]},{"r":null,"words":[{"w":"土産","reading":"みやげ","kr":"토산"}]}],"count":4},{"k":"面","kr":"면","meaning":"낯","clusters":[{"r":"めん","words":[{"w":"面接","reading":"めんせつ","kr":"면접"},{"w":"面倒","reading":"めんどう","kr":"면도"},{"w":"場面","reading":"ばめん","kr":"장면"},{"w":"表面","reading":"ひょうめん","kr":"표면"}]}],"count":4},{"k":"選","kr":"선","meaning":"가리다","clusters":[{"r":"せん","words":[{"w":"選手","reading":"せんしゅ","kr":"선수"},{"w":"選択","reading":"せんたく","kr":"선택"},{"w":"選挙","reading":"せんきょ","kr":"선거"},{"w":"選考","reading":"せんこう","kr":"선고"}]}],"count":4},{"k":"知","kr":"지","meaning":"알다","clusters":[{"r":"ち","words":[{"w":"知恵","reading":"ちえ","kr":"지혜"},{"w":"知事","reading":"ちじ","kr":"지사"},{"w":"知識","reading":"ちしき","kr":"지식"},{"w":"知能","reading":"ちのう","kr":"지능"}]}],"count":4},{"k":"道","kr":"도","meaning":"길","clusters":[{"r":"どう","words":[{"w":"鉄道","reading":"てつどう","kr":"철도"},{"w":"道徳","reading":"どうとく","kr":"도덕"},{"w":"道路","reading":"どうろ","kr":"도로"},{"w":"歩道","reading":"ほどう","kr":"보도"}]}],"count":4},{"k":"保","kr":"보","meaning":"지키다","clusters":[{"r":"ほ","words":[{"w":"保証","reading":"ほしょう","kr":"보증"},{"w":"保存","reading":"ほぞん","kr":"보존"},{"w":"保護","reading":"ほご","kr":"보호"},{"w":"保障","reading":"ほしょう","kr":"보장"}]}],"count":4},{"k":"法","kr":"법","meaning":"법","clusters":[{"r":"ほう","words":[{"w":"作法","reading":"さほう","kr":"작법"},{"w":"方法","reading":"ほうほう","kr":"방법"}]},{"r":"ぽう","words":[{"w":"憲法","reading":"けんぽう","kr":"헌법"}]}],"count":3},{"k":"考","kr":"고","meaning":"생각하다","clusters":[{"r":"こう","words":[{"w":"参考","reading":"さんこう","kr":"참고"},{"w":"考慮","reading":"こうりょ","kr":"고려"},{"w":"選考","reading":"せんこう","kr":"선고"}]}],"count":3},{"k":"酸","kr":"산","meaning":"시다","clusters":[{"r":"さん","words":[{"w":"酸性","reading":"さんせい","kr":"산성"},{"w":"酸素","reading":"さんそ","kr":"산소"},{"w":"酸化","reading":"さんか","kr":"산화"}]}],"count":3},{"k":"性","kr":"성","meaning":"성품","clusters":[{"r":"せい","words":[{"w":"酸性","reading":"さんせい","kr":"산성"},{"w":"性格","reading":"せいかく","kr":"성격"},{"w":"性質","reading":"せいしつ","kr":"성질"}]}],"count":3},{"k":"給","kr":"급","meaning":"주다","clusters":[{"r":"きゅう","words":[{"w":"支給","reading":"しきゅう","kr":"지급"},{"w":"給料","reading":"きゅうりょう","kr":"급료"},{"w":"供給","reading":"きょうきゅう","kr":"공급"}]}],"count":3},{"k":"急","kr":"급","meaning":"급하다","clusters":[{"r":"きゅう","words":[{"w":"至急","reading":"しきゅう","kr":"지급"},{"w":"急激","reading":"きゅうげき","kr":"급격"},{"w":"急速","reading":"きゅうそく","kr":"급속"}]}],"count":3},{"k":"資","kr":"자","meaning":"재물","clusters":[{"r":"し","words":[{"w":"資源","reading":"しげん","kr":"자원"},{"w":"資本","reading":"しほん","kr":"자본"},{"w":"資格","reading":"しかく","kr":"자격"}]}],"count":3},{"k":"刻","kr":"각","meaning":"새기다","clusters":[{"r":"こく","words":[{"w":"時刻","reading":"じこく","kr":"시각"},{"w":"深刻","reading":"しんこく","kr":"심각"},{"w":"遅刻","reading":"ちこく","kr":"지각"}]}],"count":3},{"k":"思","kr":"사","meaning":"생각하다","clusters":[{"r":"し","words":[{"w":"思想","reading":"しそう","kr":"사상"},{"w":"意思","reading":"いし","kr":"의사"},{"w":"不思議","reading":"ふしぎ","kr":"불사의"}]}],"count":3},{"k":"望","kr":"망","meaning":"바라다","clusters":[{"r":"ぼう","words":[{"w":"失望","reading":"しつぼう","kr":"실망"},{"w":"希望","reading":"きぼう","kr":"희망"},{"w":"志望","reading":"しぼう","kr":"지망"}]}],"count":3},{"k":"囲","kr":"위","meaning":"둘레","clusters":[{"r":"い","words":[{"w":"周囲","reading":"しゅうい","kr":"주위"},{"w":"範囲","reading":"はんい","kr":"범위"},{"w":"雰囲気","reading":"ふんいき","kr":"분위기"}]}],"count":3},{"k":"収","kr":"수","meaning":"거두다","clusters":[{"r":"しゅう","words":[{"w":"収穫","reading":"しゅうかく","kr":"수확"},{"w":"収入","reading":"しゅうにゅう","kr":"수입"},{"w":"吸収","reading":"きゅうしゅう","kr":"흡수"}]}],"count":3},{"k":"教","kr":"교","meaning":"가르치다","clusters":[{"r":"きょう","words":[{"w":"宗教","reading":"しゅうきょう","kr":"종교"},{"w":"教科書","reading":"きょうかしょ","kr":"교과서"},{"w":"教授","reading":"きょうじゅ","kr":"교수"}]}],"count":3},{"k":"修","kr":"수","meaning":"닦다","clusters":[{"r":"しゅう","words":[{"w":"修正","reading":"しゅうせい","kr":"수정"},{"w":"修理","reading":"しゅうり","kr":"수리"},{"w":"修飾","reading":"しゅうしょく","kr":"수식"}]}],"count":3},{"k":"集","kr":"집","meaning":"모이다","clusters":[{"r":"しゅう","words":[{"w":"集団","reading":"しゅうだん","kr":"집단"},{"w":"集中","reading":"しゅうちゅう","kr":"집중"},{"w":"採集","reading":"さいしゅう","kr":"채집"}]}],"count":3},{"k":"入","kr":"입","meaning":"들다","clusters":[{"r":"にゅう","words":[{"w":"収入","reading":"しゅうにゅう","kr":"수입"},{"w":"記入","reading":"きにゅう","kr":"기입"},{"w":"入場","reading":"にゅうじょう","kr":"입장"}]}],"count":3},{"k":"民","kr":"민","meaning":"백성","clusters":[{"r":"みん","words":[{"w":"住民","reading":"じゅうみん","kr":"주민"},{"w":"国民","reading":"こくみん","kr":"국민"},{"w":"農民","reading":"のうみん","kr":"농민"}]}],"count":3},{"k":"都","kr":"도","meaning":"도읍","clusters":[{"r":"と","words":[{"w":"首都","reading":"しゅと","kr":"수도"},{"w":"都会","reading":"とかい","kr":"도회"},{"w":"都市","reading":"とし","kr":"도시"}]}],"count":3},{"k":"婦","kr":"부","meaning":"아내","clusters":[{"r":"ふ","words":[{"w":"主婦","reading":"しゅふ","kr":"주부"},{"w":"夫婦","reading":"ふうふ","kr":"부부"},{"w":"婦人","reading":"ふじん","kr":"부인"}]}],"count":3},{"k":"種","kr":"종","meaning":"씨","clusters":[{"r":"しゅ","words":[{"w":"種類","reading":"しゅるい","kr":"종류"},{"w":"人種","reading":"じんしゅ","kr":"인종"},{"w":"一種","reading":"いっしゅ","kr":"일종"}]}],"count":3},{"k":"類","kr":"류","meaning":"무리","clusters":[{"r":"るい","words":[{"w":"種類","reading":"しゅるい","kr":"종류"},{"w":"書類","reading":"しょるい","kr":"서류"},{"w":"人類","reading":"じんるい","kr":"인류"}]}],"count":3},{"k":"害","kr":"해","meaning":"해롭다","clusters":[{"r":"がい","words":[{"w":"障害","reading":"しょうがい","kr":"장해"},{"w":"損害","reading":"そんがい","kr":"손해"},{"w":"被害","reading":"ひがい","kr":"피해"}]}],"count":3},{"k":"識","kr":"식","meaning":"알다","clusters":[{"r":"しき","words":[{"w":"常識","reading":"じょうしき","kr":"상식"},{"w":"意識","reading":"いしき","kr":"의식"},{"w":"知識","reading":"ちしき","kr":"지식"}]}],"count":3},{"k":"態","kr":"태","meaning":"모양","clusters":[{"r":"たい","words":[{"w":"状態","reading":"じょうたい","kr":"상태"},{"w":"形態","reading":"けいたい","kr":"형태"},{"w":"態度","reading":"たいど","kr":"태도"}]}],"count":3},{"k":"達","kr":"달","meaning":"통달하다","clusters":[{"r":"たつ","words":[{"w":"上達","reading":"じょうたつ","kr":"상달"},{"w":"配達","reading":"はいたつ","kr":"배달"},{"w":"発達","reading":"はったつ","kr":"발달"}]}],"count":3},{"k":"商","kr":"상","meaning":"장사","clusters":[{"r":"しょう","words":[{"w":"商人","reading":"しょうにん","kr":"상인"},{"w":"商売","reading":"しょうばい","kr":"상매"},{"w":"商品","reading":"しょうひん","kr":"상품"}]}],"count":3},{"k":"報","kr":"보","meaning":"갚다","clusters":[{"r":"ほう","words":[{"w":"情報","reading":"じょうほう","kr":"정보"},{"w":"予報","reading":"よほう","kr":"예보"},{"w":"報告","reading":"ほうこく","kr":"보고"}]}],"count":3},{"k":"王","kr":"왕","meaning":"임금","clusters":[{"r":"おう","words":[{"w":"女王","reading":"じょおう","kr":"여왕"},{"w":"王様","reading":"おうさま","kr":"왕양"},{"w":"王子","reading":"おうじ","kr":"왕자"}]}],"count":3},{"k":"真","kr":"진","meaning":"참","clusters":[{"r":"しん","words":[{"w":"真剣","reading":"しんけん","kr":"진검"},{"w":"真理","reading":"しんり","kr":"진리"}]},{"r":"ま","words":[{"w":"真似","reading":"まね","kr":"진사"}]}],"count":3},{"k":"字","kr":"자","meaning":"글자","clusters":[{"r":"じ","words":[{"w":"数字","reading":"すうじ","kr":"수자"},{"w":"文字","reading":"もじ","kr":"문자"},{"w":"字体","reading":"じたい","kr":"자체"}]}],"count":3},{"k":"制","kr":"제","meaning":"절제하다","clusters":[{"r":"せい","words":[{"w":"制限","reading":"せいげん","kr":"제한"},{"w":"制度","reading":"せいど","kr":"제도"},{"w":"規制","reading":"きせい","kr":"규제"}]}],"count":3},{"k":"限","kr":"한","meaning":"한하다","clusters":[{"r":"げん","words":[{"w":"制限","reading":"せいげん","kr":"제한"},{"w":"期限","reading":"きげん","kr":"기한"},{"w":"限界","reading":"げんかい","kr":"한계"}]}],"count":3},{"k":"精","kr":"정","meaning":"정밀하다","clusters":[{"r":"せい","words":[{"w":"精神","reading":"せいしん","kr":"정신"},{"w":"精巧","reading":"せいこう","kr":"정교"},{"w":"精算","reading":"せいさん","kr":"정산"}]}],"count":3},{"k":"石","kr":"석","meaning":"돌","clusters":[{"r":"せき","words":[{"w":"石炭","reading":"せきたん","kr":"석탄"},{"w":"石油","reading":"せきゆ","kr":"석유"},{"w":"宝石","reading":"ほうせき","kr":"보석"}]}],"count":3},{"k":"設","kr":"설","meaning":"베풀다","clusters":[{"r":"せつ","words":[{"w":"建設","reading":"けんせつ","kr":"건설"},{"w":"設備","reading":"せつび","kr":"설비"}]},{"r":"せっ","words":[{"w":"設計","reading":"せっけい","kr":"설계"}]}],"count":3},{"k":"対","kr":"대","meaning":"대하다","clusters":[{"r":"たい","words":[{"w":"絶対","reading":"ぜったい","kr":"절대"},{"w":"対象","reading":"たいしょう","kr":"대상"},{"w":"対照","reading":"たいしょう","kr":"대조"}]}],"count":3},{"k":"悪","kr":"악","meaning":"악하다","clusters":[{"r":"わる","words":[{"w":"意地悪","reading":"いじわる","kr":"의지악"},{"w":"悪口","reading":"わるくち","kr":"악구"}]},{"r":"あく","words":[{"w":"悪魔","reading":"あくま","kr":"악마"}]}],"count":3},{"k":"案","kr":"안","meaning":"생각","clusters":[{"r":"あん","words":[{"w":"案外","reading":"あんがい","kr":"안외"},{"w":"提案","reading":"ていあん","kr":"제안"},{"w":"答案","reading":"とうあん","kr":"답안"}]}],"count":3},{"k":"医","kr":"의","meaning":"의원","clusters":[{"r":"い","words":[{"w":"医師","reading":"いし","kr":"의사"},{"w":"医療","reading":"いりょう","kr":"의료"},{"w":"医院","reading":"いいん","kr":"의원"}]}],"count":3},{"k":"志","kr":"지","meaning":"뜻","clusters":[{"r":"し","words":[{"w":"意志","reading":"いし","kr":"의지"},{"w":"志望","reading":"しぼう","kr":"지망"},{"w":"同志","reading":"どうし","kr":"동지"}]}],"count":3},{"k":"前","kr":"전","meaning":"앞","clusters":[{"r":"ぜん","words":[{"w":"以前","reading":"いぜん","kr":"이전"},{"w":"前者","reading":"ぜんしゃ","kr":"전자"},{"w":"前進","reading":"ぜんしん","kr":"전진"}]}],"count":3},{"k":"位","kr":"위","meaning":"자리","clusters":[{"r":"い","words":[{"w":"位置","reading":"いち","kr":"위치"},{"w":"単位","reading":"たんい","kr":"단위"},{"w":"地位","reading":"ちい","kr":"지위"}]}],"count":3},{"k":"反","kr":"반","meaning":"돌이키다","clusters":[{"r":"はん","words":[{"w":"違反","reading":"いはん","kr":"위반"},{"w":"反抗","reading":"はんこう","kr":"반항"},{"w":"反省","reading":"はんせい","kr":"반성"}]}],"count":3},{"k":"服","kr":"복","meaning":"옷","clusters":[{"r":"ふく","words":[{"w":"衣服","reading":"いふく","kr":"의복"},{"w":"克服","reading":"こくふく","kr":"극복"},{"w":"服装","reading":"ふくそう","kr":"복장"}]}],"count":3},{"k":"来","kr":"래","meaning":"오다","clusters":[{"r":"らい","words":[{"w":"以来","reading":"いらい","kr":"이래"},{"w":"未来","reading":"みらい","kr":"미래"}]},{"r":"き","words":[{"w":"出来事","reading":"できごと","kr":"출래사"}]}],"count":3},{"k":"象","kr":"상","meaning":"코끼리","clusters":[{"r":"しょう","words":[{"w":"印象","reading":"いんしょう","kr":"인상"},{"w":"現象","reading":"げんしょう","kr":"현상"},{"w":"対象","reading":"たいしょう","kr":"대상"}]}],"count":3},{"k":"技","kr":"기","meaning":"재주","clusters":[{"r":"ぎ","words":[{"w":"演技","reading":"えんぎ","kr":"연기"},{"w":"技師","reading":"ぎし","kr":"기사"},{"w":"競技","reading":"きょうぎ","kr":"경기"}]}],"count":3},{"k":"交","kr":"교","meaning":"사귀다","clusters":[{"r":"こう","words":[{"w":"外交","reading":"がいこう","kr":"외교"},{"w":"交換","reading":"こうかん","kr":"교환"},{"w":"交際","reading":"こうさい","kr":"교제"}]}],"count":3},{"k":"覚","kr":"각","meaning":"깨닫다","clusters":[{"r":"かく","words":[{"w":"覚悟","reading":"かくご","kr":"각오"},{"w":"感覚","reading":"かんかく","kr":"감각"},{"w":"視覚","reading":"しかく","kr":"시각"}]}],"count":3},{"k":"問","kr":"문","meaning":"묻다","clusters":[{"r":"もん","words":[{"w":"学問","reading":"がくもん","kr":"학문"},{"w":"疑問","reading":"ぎもん","kr":"의문"},{"w":"訪問","reading":"ほうもん","kr":"방문"}]}],"count":3},{"k":"過","kr":"과","meaning":"지나다","clusters":[{"r":"か","words":[{"w":"過去","reading":"かこ","kr":"과거"},{"w":"過程","reading":"かてい","kr":"과정"},{"w":"通過","reading":"つうか","kr":"통과"}]}],"count":3},{"k":"程","kr":"정","meaning":"한도","clusters":[{"r":"てい","words":[{"w":"過程","reading":"かてい","kr":"과정"},{"w":"課程","reading":"かてい","kr":"과정"},{"w":"程度","reading":"ていど","kr":"정도"}]}],"count":3},{"k":"可","kr":"가","meaning":"옳다","clusters":[{"r":"か","words":[{"w":"可能","reading":"かのう","kr":"가능"},{"w":"許可","reading":"きょか","kr":"허가"},{"w":"不可","reading":"ふか","kr":"불가"}]}],"count":3},{"k":"観","kr":"관","meaning":"보다","clusters":[{"r":"かん","words":[{"w":"観客","reading":"かんきゃく","kr":"관객"},{"w":"観光","reading":"かんこう","kr":"관광"},{"w":"観察","reading":"かんさつ","kr":"관찰"}]}],"count":3},{"k":"光","kr":"광","meaning":"빛","clusters":[{"r":"こう","words":[{"w":"観光","reading":"かんこう","kr":"관광"},{"w":"光景","reading":"こうけい","kr":"광경"},{"w":"日光","reading":"にっこう","kr":"일광"}]}],"count":3},{"k":"関","kr":"관","meaning":"관계하다","clusters":[{"r":"かん","words":[{"w":"関心","reading":"かんしん","kr":"관심"},{"w":"関連","reading":"かんれん","kr":"관련"},{"w":"機関","reading":"きかん","kr":"기관"}]}],"count":3},{"k":"完","kr":"완","meaning":"완전하다","clusters":[{"r":"かん","words":[{"w":"完成","reading":"かんせい","kr":"완성"},{"w":"完全","reading":"かんぜん","kr":"완전"},{"w":"完了","reading":"かんりょう","kr":"완료"}]}],"count":3},{"k":"連","kr":"련","meaning":"잇다","clusters":[{"r":"れん","words":[{"w":"関連","reading":"かんれん","kr":"관련"},{"w":"連想","reading":"れんそう","kr":"연상"},{"w":"連続","reading":"れんぞく","kr":"연속"}]}],"count":3},{"k":"候","kr":"후","meaning":"기후","clusters":[{"r":"こう","words":[{"w":"気候","reading":"きこう","kr":"기후"},{"w":"候補","reading":"こうほ","kr":"후보"},{"w":"天候","reading":"てんこう","kr":"천후"}]}],"count":3},{"k":"休","kr":"휴","meaning":"쉬다","clusters":[{"r":"きゅう","words":[{"w":"休暇","reading":"きゅうか","kr":"휴가"},{"w":"休憩","reading":"きゅうけい","kr":"휴게"},{"w":"休息","reading":"きゅうそく","kr":"휴식"}]}],"count":3},{"k":"速","kr":"속","meaning":"빠르다","clusters":[{"r":"そく","words":[{"w":"急速","reading":"きゅうそく","kr":"급속"},{"w":"高速","reading":"こうそく","kr":"고속"},{"w":"速度","reading":"そくど","kr":"속도"}]}],"count":3},{"k":"強","kr":"강","meaning":"강하다","clusters":[{"r":"きょう","words":[{"w":"強調","reading":"きょうちょう","kr":"강조"},{"w":"強力","reading":"きょうりょく","kr":"강력"}]},{"r":"ごう","words":[{"w":"強盗","reading":"ごうとう","kr":"강도"}]}],"count":3},{"k":"協","kr":"협","meaning":"화합하다","clusters":[{"r":"きょう","words":[{"w":"協力","reading":"きょうりょく","kr":"협력"},{"w":"協議","reading":"きょうぎ","kr":"협의"},{"w":"協調","reading":"きょうちょう","kr":"협조"}]}],"count":3},{"k":"近","kr":"근","meaning":"가깝다","clusters":[{"r":"きん","words":[{"w":"近代","reading":"きんだい","kr":"근대"},{"w":"近視","reading":"きんし","kr":"근시"}]},{"r":"ちか","words":[{"w":"近頃","reading":"ちかごろ","kr":"근경"}]}],"count":3},{"k":"苦","kr":"고","meaning":"괴롭다","clusters":[{"r":"く","words":[{"w":"苦痛","reading":"くつう","kr":"고통"},{"w":"苦労","reading":"くろう","kr":"고로"}]},{"r":"にが","words":[{"w":"苦手","reading":"にがて","kr":"고수"}]}],"count":3},{"k":"景","kr":"경","meaning":"경치","clusters":[{"r":"けい","words":[{"w":"景気","reading":"けいき","kr":"경기"},{"w":"光景","reading":"こうけい","kr":"광경"},{"w":"風景","reading":"ふうけい","kr":"풍경"}]}],"count":3},{"k":"算","kr":"산","meaning":"셈하다","clusters":[{"r":"さん","words":[{"w":"計算","reading":"けいさん","kr":"계산"},{"w":"予算","reading":"よさん","kr":"예산"},{"w":"精算","reading":"せいさん","kr":"정산"}]}],"count":3},{"k":"約","kr":"약","meaning":"맺다","clusters":[{"r":"やく","words":[{"w":"契約","reading":"けいやく","kr":"계약"},{"w":"婚約","reading":"こんやく","kr":"혼약"},{"w":"節約","reading":"せつやく","kr":"절약"}]}],"count":3},{"k":"結","kr":"결","meaning":"맺다","clusters":[{"r":"けっ","words":[{"w":"結果","reading":"けっか","kr":"결과"},{"w":"結局","reading":"けっきょく","kr":"결국"}]},{"r":"けつ","words":[{"w":"結論","reading":"けつろん","kr":"결론"}]}],"count":3},{"k":"欠","kr":"결","meaning":"이지러지다","clusters":[{"r":"けっ","words":[{"w":"欠陥","reading":"けっかん","kr":"결함"},{"w":"欠席","reading":"けっせき","kr":"결석"},{"w":"欠点","reading":"けってん","kr":"결점"}]}],"count":3},{"k":"点","kr":"점","meaning":"점","clusters":[{"r":"てん","words":[{"w":"欠点","reading":"けってん","kr":"결점"},{"w":"要点","reading":"ようてん","kr":"요점"},{"w":"視点","reading":"してん","kr":"시점"}]}],"count":3},{"k":"言","kr":"언","meaning":"말씀","clusters":[{"r":"げん","words":[{"w":"言語","reading":"げんご","kr":"언어"}]},{"r":"こと","words":[{"w":"一言","reading":"ひとこと","kr":"일언"}]},{"r":"ごん","words":[{"w":"伝言","reading":"でんごん","kr":"전언"}]}],"count":3},{"k":"査","kr":"사","meaning":"조사하다","clusters":[{"r":"さ","words":[{"w":"検査","reading":"けんさ","kr":"검사"},{"w":"調査","reading":"ちょうさ","kr":"조사"},{"w":"捜査","reading":"そうさ","kr":"수사"}]}],"count":3},{"k":"在","kr":"재","meaning":"있다","clusters":[{"r":"ざい","words":[{"w":"現在","reading":"げんざい","kr":"현재"},{"w":"存在","reading":"そんざい","kr":"존재"},{"w":"滞在","reading":"たいざい","kr":"체재"}]}],"count":3},{"k":"幸","kr":"행","meaning":"다행","clusters":[{"r":"こう","words":[{"w":"幸運","reading":"こううん","kr":"행운"},{"w":"幸福","reading":"こうふく","kr":"행복"},{"w":"不幸","reading":"ふこう","kr":"불행"}]}],"count":3},{"k":"貨","kr":"화","meaning":"재화","clusters":[{"r":"か","words":[{"w":"硬貨","reading":"こうか","kr":"경화"},{"w":"通貨","reading":"つうか","kr":"통화"},{"w":"銅貨","reading":"どうか","kr":"동화"}]}],"count":3},{"k":"高","kr":"고","meaning":"높다","clusters":[{"r":"こう","words":[{"w":"高価","reading":"こうか","kr":"고가"},{"w":"高速","reading":"こうそく","kr":"고속"},{"w":"最高","reading":"さいこう","kr":"최고"}]}],"count":3},{"k":"公","kr":"공","meaning":"공평하다","clusters":[{"r":"こう","words":[{"w":"公正","reading":"こうせい","kr":"공정"},{"w":"公平","reading":"こうへい","kr":"공평"},{"w":"公演","reading":"こうえん","kr":"공연"}]}],"count":3},{"k":"今","kr":"금","meaning":"이제","clusters":[{"r":"こん","words":[{"w":"今回","reading":"こんかい","kr":"금회"},{"w":"今後","reading":"こんご","kr":"금후"},{"w":"今日","reading":"こんにち","kr":"금일"}]}],"count":3},{"k":"足","kr":"족","meaning":"발","clusters":[{"r":"ぞく","words":[{"w":"満足","reading":"まんぞく","kr":"만족"}]},{"r":"た","words":[{"w":"足袋","reading":"たび","kr":"족대"}]},{"r":"そく","words":[{"w":"不足","reading":"ふそく","kr":"부족"}]}],"count":3},{"k":"詞","kr":"사","meaning":"말","clusters":[{"r":"し","words":[{"w":"名詞","reading":"めいし","kr":"명사"},{"w":"動詞","reading":"どうし","kr":"동사"},{"w":"助詞","reading":"じょし","kr":"조사"}]}],"count":3},{"k":"容","kr":"용","meaning":"얼굴","clusters":[{"r":"よう","words":[{"w":"容易","reading":"ようい","kr":"용이"},{"w":"容器","reading":"ようき","kr":"용기"},{"w":"内容","reading":"ないよう","kr":"내용"}]}],"count":3},{"k":"車","kr":"차","meaning":"수레","clusters":[{"r":"しゃ","words":[{"w":"列車","reading":"れっしゃ","kr":"열차"},{"w":"駐車","reading":"ちゅうしゃ","kr":"주차"},{"w":"発車","reading":"はっしゃ","kr":"발차"}]}],"count":3},{"k":"題","kr":"제","meaning":"제목","clusters":[{"r":"だい","words":[{"w":"話題","reading":"わだい","kr":"화제"},{"w":"課題","reading":"かだい","kr":"과제"},{"w":"題名","reading":"だいめい","kr":"제명"}]}],"count":3},{"k":"帯","kr":"대","meaning":"띠","clusters":[{"r":"たい","words":[{"w":"一帯","reading":"いったい","kr":"일대"},{"w":"携帯","reading":"けいたい","kr":"휴대"},{"w":"熱帯","reading":"ねったい","kr":"열대"}]}],"count":3},{"k":"興","kr":"흥","meaning":"일다","clusters":[{"r":"こう","words":[{"w":"興奮","reading":"こうふん","kr":"흥분"},{"w":"新興","reading":"しんこう","kr":"신흥"},{"w":"振興","reading":"しんこう","kr":"진흥"}]}],"count":3},{"k":"伝","kr":"전","meaning":"전하다","clusters":[{"r":"でん","words":[{"w":"宣伝","reading":"せんでん","kr":"선전"},{"w":"伝統","reading":"でんとう","kr":"전통"},{"w":"伝言","reading":"でんごん","kr":"전언"}]}],"count":3},{"k":"装","kr":"장","meaning":"꾸미다","clusters":[{"r":"そう","words":[{"w":"装置","reading":"そうち","kr":"장치"},{"w":"服装","reading":"ふくそう","kr":"복장"},{"w":"包装","reading":"ほうそう","kr":"포장"}]}],"count":3},{"k":"単","kr":"단","meaning":"홑","clusters":[{"r":"たん","words":[{"w":"単位","reading":"たんい","kr":"단위"},{"w":"単語","reading":"たんご","kr":"단어"},{"w":"単純","reading":"たんじゅん","kr":"단순"}]}],"count":3},{"k":"独","kr":"독","meaning":"홀로","clusters":[{"r":"どく","words":[{"w":"独身","reading":"どくしん","kr":"독신"},{"w":"独特","reading":"どくとく","kr":"독특"},{"w":"独立","reading":"どくりつ","kr":"독립"}]}],"count":3},{"k":"特","kr":"특","meaning":"특별하다","clusters":[{"r":"とく","words":[{"w":"特徴","reading":"とくちょう","kr":"특징"},{"w":"特長","reading":"とくちょう","kr":"특장"},{"w":"独特","reading":"どくとく","kr":"독특"}]}],"count":3},{"k":"農","kr":"농","meaning":"농사","clusters":[{"r":"のう","words":[{"w":"農家","reading":"のうか","kr":"농가"},{"w":"農業","reading":"のうぎょう","kr":"농업"},{"w":"農民","reading":"のうみん","kr":"농민"}]}],"count":3},{"k":"評","kr":"평","meaning":"평하다","clusters":[{"r":"ひょう","words":[{"w":"批評","reading":"ひひょう","kr":"비평"},{"w":"評価","reading":"ひょうか","kr":"평가"},{"w":"評判","reading":"ひょうばん","kr":"평판"}]}],"count":3},{"k":"参","kr":"참","meaning":"참여하다","clusters":[{"r":"さん","words":[{"w":"参加","reading":"さんか","kr":"참가"},{"w":"参考","reading":"さんこう","kr":"참고"}]}],"count":2},{"k":"素","kr":"소","meaning":"바탕","clusters":[{"r":"そ","words":[{"w":"酸素","reading":"さんそ","kr":"산소"},{"w":"要素","reading":"ようそ","kr":"요소"}]}],"count":2},{"k":"四","kr":"사","meaning":"넷","clusters":[{"r":"し","words":[{"w":"四角","reading":"しかく","kr":"사각"},{"w":"四季","reading":"しき","kr":"사계"}]}],"count":2},{"k":"季","kr":"계","meaning":"계절","clusters":[{"r":"き","words":[{"w":"四季","reading":"しき","kr":"사계"},{"w":"季刊","reading":"きかん","kr":"계간"}]}],"count":2},{"k":"刺","kr":"자","meaning":"찌르다","clusters":[{"r":"し","words":[{"w":"刺激","reading":"しげき","kr":"자격"},{"w":"名刺","reading":"めいし","kr":"명자"}]}],"count":2},{"k":"激","kr":"격","meaning":"격렬하다","clusters":[{"r":"げき","words":[{"w":"刺激","reading":"しげき","kr":"자격"},{"w":"急激","reading":"きゅうげき","kr":"급격"}]}],"count":2},{"k":"源","kr":"원","meaning":"근원","clusters":[{"r":"げん","words":[{"w":"資源","reading":"しげん","kr":"자원"},{"w":"起源","reading":"きげん","kr":"기원"}]}],"count":2},{"k":"件","kr":"건","meaning":"사건","clusters":[{"r":"けん","words":[{"w":"事件","reading":"じけん","kr":"사건"},{"w":"条件","reading":"じょうけん","kr":"조건"}]}],"count":2},{"k":"失","kr":"실","meaning":"잃다","clusters":[{"r":"しつ","words":[{"w":"失業","reading":"しつぎょう","kr":"실업"},{"w":"失望","reading":"しつぼう","kr":"실망"}]}],"count":2},{"k":"湿","kr":"습","meaning":"젖다","clusters":[{"r":"しっ","words":[{"w":"湿気","reading":"しっけ","kr":"습기"}]},{"r":"しつ","words":[{"w":"湿度","reading":"しつど","kr":"습도"}]}],"count":2},{"k":"際","kr":"제","meaning":"즈음","clusters":[{"r":"さい","words":[{"w":"実際","reading":"じっさい","kr":"실제"},{"w":"交際","reading":"こうさい","kr":"교제"}]}],"count":2},{"k":"指","kr":"지","meaning":"가리키다","clusters":[{"r":"し","words":[{"w":"指導","reading":"しどう","kr":"지도"},{"w":"指揮","reading":"しき","kr":"지휘"}]}],"count":2},{"k":"童","kr":"동","meaning":"아이","clusters":[{"r":"どう","words":[{"w":"児童","reading":"じどう","kr":"아동"},{"w":"童謡","reading":"どうよう","kr":"동요"}]}],"count":2},{"k":"配","kr":"배","meaning":"나누다","clusters":[{"r":"はい","words":[{"w":"支配","reading":"しはい","kr":"지배"},{"w":"配達","reading":"はいたつ","kr":"배달"}]}],"count":2},{"k":"芝","kr":"지","meaning":"잔디","clusters":[{"r":"しば","words":[{"w":"芝居","reading":"しばい","kr":"지거"},{"w":"芝生","reading":"しばふ","kr":"지생"}]}],"count":2},{"k":"居","kr":"거","meaning":"살다","clusters":[{"r":"い","words":[{"w":"芝居","reading":"しばい","kr":"지거"},{"w":"居間","reading":"いま","kr":"거간"}]}],"count":2},{"k":"死","kr":"사","meaning":"죽다","clusters":[{"r":"し","words":[{"w":"死亡","reading":"しぼう","kr":"사망"},{"w":"必死","reading":"ひっし","kr":"필사"}]}],"count":2},{"k":"姉","kr":"자","meaning":"손위누이","clusters":[{"r":"し","words":[{"w":"姉妹","reading":"しまい","kr":"자매"}]},{"r":null,"words":[{"w":"従姉妹","reading":"いとこ","kr":"종자매"}]}],"count":2},{"k":"妹","kr":"매","meaning":"손아래누이","clusters":[{"r":"まい","words":[{"w":"姉妹","reading":"しまい","kr":"자매"}]},{"r":null,"words":[{"w":"従姉妹","reading":"いとこ","kr":"종자매"}]}],"count":2},{"k":"慢","kr":"만","meaning":"게으르다","clusters":[{"r":"まん","words":[{"w":"自慢","reading":"じまん","kr":"자만"},{"w":"我慢","reading":"がまん","kr":"아만"}]}],"count":2},{"k":"職","kr":"직","meaning":"직분","clusters":[{"r":"しょく","words":[{"w":"就職","reading":"しゅうしょく","kr":"취직"},{"w":"職業","reading":"しょくぎょう","kr":"직업"}]}],"count":2},{"k":"滞","kr":"체","meaning":"막히다","clusters":[{"r":"たい","words":[{"w":"渋滞","reading":"じゅうたい","kr":"삽체"},{"w":"滞在","reading":"たいざい","kr":"체재"}]}],"count":2},{"k":"住","kr":"주","meaning":"살다","clusters":[{"r":"じゅう","words":[{"w":"住宅","reading":"じゅうたく","kr":"주택"},{"w":"住民","reading":"じゅうみん","kr":"주민"}]}],"count":2},{"k":"宅","kr":"택","meaning":"집","clusters":[{"r":"たく","words":[{"w":"住宅","reading":"じゅうたく","kr":"주택"},{"w":"帰宅","reading":"きたく","kr":"귀택"}]}],"count":2},{"k":"団","kr":"단","meaning":"둥글다","clusters":[{"r":"だん","words":[{"w":"集団","reading":"しゅうだん","kr":"집단"},{"w":"団体","reading":"だんたい","kr":"단체"}]}],"count":2},{"k":"義","kr":"의","meaning":"옳다","clusters":[{"r":"ぎ","words":[{"w":"主義","reading":"しゅぎ","kr":"주의"},{"w":"義務","reading":"ぎむ","kr":"의무"}]}],"count":2},{"k":"術","kr":"술","meaning":"재주","clusters":[{"r":"じゅつ","words":[{"w":"手術","reading":"しゅじゅつ","kr":"수술"},{"w":"芸術","reading":"げいじゅつ","kr":"예술"}]}],"count":2},{"k":"首","kr":"수","meaning":"머리","clusters":[{"r":"しゅ","words":[{"w":"首相","reading":"しゅしょう","kr":"수상"},{"w":"首都","reading":"しゅと","kr":"수도"}]}],"count":2},{"k":"段","kr":"단","meaning":"층계","clusters":[{"r":"だん","words":[{"w":"手段","reading":"しゅだん","kr":"수단"},{"w":"普段","reading":"ふだん","kr":"보단"}]}],"count":2},{"k":"張","kr":"장","meaning":"베풀다","clusters":[{"r":"ちょう","words":[{"w":"主張","reading":"しゅちょう","kr":"주장"},{"w":"緊張","reading":"きんちょう","kr":"긴장"}]}],"count":2},{"k":"瞬","kr":"순","meaning":"눈깜짝할","clusters":[{"r":"しゅん","words":[{"w":"瞬間","reading":"しゅんかん","kr":"순간"},{"w":"一瞬","reading":"いっしゅん","kr":"일순"}]}],"count":2},{"k":"順","kr":"순","meaning":"순하다","clusters":[{"r":"じゅん","words":[{"w":"順調","reading":"じゅんちょう","kr":"순조"},{"w":"順番","reading":"じゅんばん","kr":"순번"}]}],"count":2},{"k":"使","kr":"사","meaning":"부리다","clusters":[{"r":"し","words":[{"w":"使用","reading":"しよう","kr":"사용"},{"w":"大使","reading":"たいし","kr":"대사"}]}],"count":2},{"k":"障","kr":"장","meaning":"막히다","clusters":[{"r":"しょう","words":[{"w":"障害","reading":"しょうがい","kr":"장해"},{"w":"保障","reading":"ほしょう","kr":"보장"}]}],"count":2},{"k":"客","kr":"객","meaning":"손님","clusters":[{"r":"きゃく","words":[{"w":"乗客","reading":"じょうきゃく","kr":"승객"},{"w":"観客","reading":"かんきゃく","kr":"관객"}]}],"count":2},{"k":"直","kr":"직","meaning":"곧다","clusters":[{"r":"じき","words":[{"w":"正直","reading":"しょうじき","kr":"정직"}]},{"r":"ちょく","words":[{"w":"直接","reading":"ちょくせつ","kr":"직접"}]}],"count":2},{"k":"等","kr":"등","meaning":"무리","clusters":[{"r":"とう","words":[{"w":"上等","reading":"じょうとう","kr":"상등"}]},{"r":"どう","words":[{"w":"平等","reading":"びょうどう","kr":"평등"}]}],"count":2},{"k":"突","kr":"돌","meaning":"갑자기","clusters":[{"r":"とつ","words":[{"w":"衝突","reading":"しょうとつ","kr":"충돌"},{"w":"突然","reading":"とつぜん","kr":"돌연"}]}],"count":2},{"k":"認","kr":"인","meaning":"알다","clusters":[{"r":"にん","words":[{"w":"承認","reading":"しょうにん","kr":"승인"},{"w":"確認","reading":"かくにん","kr":"확인"}]}],"count":2},{"k":"売","kr":"매","meaning":"팔다","clusters":[{"r":"ばい","words":[{"w":"商売","reading":"しょうばい","kr":"상매"},{"w":"販売","reading":"はんばい","kr":"판매"}]}],"count":2},{"k":"消","kr":"소","meaning":"사라지다","clusters":[{"r":"しょう","words":[{"w":"消費","reading":"しょうひ","kr":"소비"},{"w":"消防","reading":"しょうぼう","kr":"소방"}]}],"count":2},{"k":"費","kr":"비","meaning":"쓰다","clusters":[{"r":"ひ","words":[{"w":"消費","reading":"しょうひ","kr":"소비"},{"w":"費用","reading":"ひよう","kr":"비용"}]}],"count":2},{"k":"防","kr":"방","meaning":"막다","clusters":[{"r":"ぼう","words":[{"w":"消防","reading":"しょうぼう","kr":"소방"},{"w":"予防","reading":"よぼう","kr":"예방"}]}],"count":2},{"k":"証","kr":"증","meaning":"증거","clusters":[{"r":"しょう","words":[{"w":"証明","reading":"しょうめい","kr":"증명"},{"w":"保証","reading":"ほしょう","kr":"보증"}]}],"count":2},{"k":"省","kr":"성","meaning":"살피다","clusters":[{"r":"しょう","words":[{"w":"省略","reading":"しょうりゃく","kr":"성략"}]},{"r":"せい","words":[{"w":"反省","reading":"はんせい","kr":"반성"}]}],"count":2},{"k":"神","kr":"신","meaning":"귀신","clusters":[{"r":"しん","words":[{"w":"神経","reading":"しんけい","kr":"신경"},{"w":"精神","reading":"せいしん","kr":"정신"}]}],"count":2},{"k":"工","kr":"공","meaning":"장인","clusters":[{"r":"こう","words":[{"w":"人工","reading":"じんこう","kr":"인공"},{"w":"工場","reading":"こうば","kr":"공장"}]}],"count":2},{"k":"察","kr":"찰","meaning":"살피다","clusters":[{"r":"さつ","words":[{"w":"診察","reading":"しんさつ","kr":"진찰"},{"w":"観察","reading":"かんさつ","kr":"관찰"}]}],"count":2},{"k":"新","kr":"신","meaning":"새롭다","clusters":[{"r":"しん","words":[{"w":"新鮮","reading":"しんせん","kr":"신선"},{"w":"新興","reading":"しんこう","kr":"신흥"}]}],"count":2},{"k":"歩","kr":"보","meaning":"걷다","clusters":[{"r":"ぽ","words":[{"w":"進歩","reading":"しんぽ","kr":"진보"}]},{"r":"ほ","words":[{"w":"歩道","reading":"ほどう","kr":"보도"}]}],"count":2},{"k":"頼","kr":"뢰","meaning":"의지하다","clusters":[{"r":"らい","words":[{"w":"信頼","reading":"しんらい","kr":"신뢰"},{"w":"依頼","reading":"いらい","kr":"의뢰"}]}],"count":2},{"k":"水","kr":"수","meaning":"물","clusters":[{"r":"すい","words":[{"w":"水準","reading":"すいじゅん","kr":"수준"},{"w":"水洗","reading":"すいせん","kr":"수세"}]}],"count":2},{"k":"痛","kr":"통","meaning":"아프다","clusters":[{"r":"つう","words":[{"w":"頭痛","reading":"ずつう","kr":"두통"},{"w":"苦痛","reading":"くつう","kr":"고통"}]}],"count":2},{"k":"所","kr":"소","meaning":"바","clusters":[{"r":"じょ","words":[{"w":"停留所","reading":"ていりゅうじょ","kr":"정류소"}]},{"r":null,"words":[{"w":"所為","reading":"せい","kr":"소위"}]}],"count":2},{"k":"世","kr":"세","meaning":"세상","clusters":[{"r":"せい","words":[{"w":"世紀","reading":"せいき","kr":"세기"}]},{"r":"せ","words":[{"w":"世間","reading":"せけん","kr":"세간"}]}],"count":2},{"k":"求","kr":"구","meaning":"구하다","clusters":[{"r":"きゅう","words":[{"w":"請求","reading":"せいきゅう","kr":"청구"},{"w":"要求","reading":"ようきゅう","kr":"요구"}]}],"count":2},{"k":"質","kr":"질","meaning":"바탕","clusters":[{"r":"しつ","words":[{"w":"性質","reading":"せいしつ","kr":"성질"},{"w":"物質","reading":"ぶっしつ","kr":"물질"}]}],"count":2},{"k":"製","kr":"제","meaning":"짓다","clusters":[{"r":"せい","words":[{"w":"製造","reading":"せいぞう","kr":"제조"},{"w":"製品","reading":"せいひん","kr":"제품"}]}],"count":2},{"k":"造","kr":"조","meaning":"짓다","clusters":[{"r":"ぞう","words":[{"w":"製造","reading":"せいぞう","kr":"제조"},{"w":"創造","reading":"そうぞう","kr":"창조"}]}],"count":2},{"k":"月","kr":"월","meaning":"달","clusters":[{"r":"がっ","words":[{"w":"生年月日","reading":"せいねんがっぴ","kr":"생년월일"}]},{"r":"つき","words":[{"w":"年月","reading":"としつき","kr":"연월"}]}],"count":2},{"k":"命","kr":"명","meaning":"목숨","clusters":[{"r":"めい","words":[{"w":"生命","reading":"せいめい","kr":"생명"},{"w":"命令","reading":"めいれい","kr":"명령"}]}],"count":2},{"k":"的","kr":"적","meaning":"과녁","clusters":[{"r":"てき","words":[{"w":"積極的","reading":"せっきょくてき","kr":"적극적"},{"w":"目的","reading":"もくてき","kr":"목적"}]}],"count":2},{"k":"絶","kr":"절","meaning":"끊다","clusters":[{"r":"ぜっ","words":[{"w":"絶対","reading":"ぜったい","kr":"절대"}]},{"r":"ぜつ","words":[{"w":"絶滅","reading":"ぜつめつ","kr":"절멸"}]}],"count":2},{"k":"図","kr":"도","meaning":"그림","clusters":[{"r":"ず","words":[{"w":"合図","reading":"あいず","kr":"합도"}]},{"r":"と","words":[{"w":"図書","reading":"としょ","kr":"도서"}]}],"count":2},{"k":"安","kr":"안","meaning":"편안하다","clusters":[{"r":"あん","words":[{"w":"安定","reading":"あんてい","kr":"안정"},{"w":"不安","reading":"ふあん","kr":"불안"}]}],"count":2},{"k":"師","kr":"사","meaning":"스승","clusters":[{"r":"し","words":[{"w":"医師","reading":"いし","kr":"의사"},{"w":"技師","reading":"ぎし","kr":"기사"}]}],"count":2},{"k":"異","kr":"이","meaning":"다르다","clusters":[{"r":"い","words":[{"w":"異常","reading":"いじょう","kr":"이상"},{"w":"異動","reading":"いどう","kr":"이동"}]}],"count":2},{"k":"以","kr":"이","meaning":"써","clusters":[{"r":"い","words":[{"w":"以前","reading":"いぜん","kr":"이전"},{"w":"以来","reading":"いらい","kr":"이래"}]}],"count":2},{"k":"置","kr":"치","meaning":"두다","clusters":[{"r":"ち","words":[{"w":"位置","reading":"いち","kr":"위치"},{"w":"装置","reading":"そうち","kr":"장치"}]}],"count":2},{"k":"市","kr":"시","meaning":"저자","clusters":[{"r":"いち","words":[{"w":"市場","reading":"いちば","kr":"시장"}]},{"r":"し","words":[{"w":"都市","reading":"とし","kr":"도시"}]}],"count":2},{"k":"従","kr":"종","meaning":"좇다","clusters":[{"r":null,"words":[{"w":"従兄弟","reading":"いとこ","kr":"종형제"},{"w":"従姉妹","reading":"いとこ","kr":"종자매"}]}],"count":2},{"k":"衣","kr":"의","meaning":"옷","clusters":[{"r":"い","words":[{"w":"衣服","reading":"いふく","kr":"의복"},{"w":"衣料","reading":"いりょう","kr":"의료"}]}],"count":2},{"k":"依","kr":"의","meaning":"의지하다","clusters":[{"r":"い","words":[{"w":"依頼","reading":"いらい","kr":"의뢰"},{"w":"依然","reading":"いぜん","kr":"의연"}]}],"count":2},{"k":"療","kr":"료","meaning":"병고치다","clusters":[{"r":"りょう","words":[{"w":"医療","reading":"いりょう","kr":"의료"},{"w":"治療","reading":"ちりょう","kr":"치료"}]}],"count":2},{"k":"印","kr":"인","meaning":"도장","clusters":[{"r":"いん","words":[{"w":"印刷","reading":"いんさつ","kr":"인쇄"},{"w":"印象","reading":"いんしょう","kr":"인상"}]}],"count":2},{"k":"引","kr":"인","meaning":"끌다","clusters":[{"r":"いん","words":[{"w":"引退","reading":"いんたい","kr":"인퇴"},{"w":"引用","reading":"いんよう","kr":"인용"}]}],"count":2},{"k":"運","kr":"운","meaning":"옮기다","clusters":[{"r":"うん","words":[{"w":"運転","reading":"うんてん","kr":"운전"},{"w":"幸運","reading":"こううん","kr":"행운"}]}],"count":2},{"k":"転","kr":"전","meaning":"구르다","clusters":[{"r":"てん","words":[{"w":"運転","reading":"うんてん","kr":"운전"},{"w":"転校","reading":"てんこう","kr":"전교"}]}],"count":2},{"k":"永","kr":"영","meaning":"길다","clusters":[{"r":"えい","words":[{"w":"永遠","reading":"えいえん","kr":"영원"},{"w":"永久","reading":"えいきゅう","kr":"영구"}]}],"count":2},{"k":"営","kr":"영","meaning":"경영하다","clusters":[{"r":"えい","words":[{"w":"営業","reading":"えいぎょう","kr":"영업"},{"w":"経営","reading":"けいえい","kr":"경영"}]}],"count":2},{"k":"援","kr":"원","meaning":"돕다","clusters":[{"r":"えん","words":[{"w":"援助","reading":"えんじょ","kr":"원조"},{"w":"応援","reading":"おうえん","kr":"응원"}]}],"count":2},{"k":"断","kr":"단","meaning":"끊다","clusters":[{"r":"だん","words":[{"w":"横断","reading":"おうだん","kr":"횡단"},{"w":"判断","reading":"はんだん","kr":"판단"}]}],"count":2},{"k":"画","kr":"화","meaning":"그림","clusters":[{"r":"が","words":[{"w":"絵画","reading":"かいが","kr":"회화"},{"w":"画家","reading":"がか","kr":"화가"}]}],"count":2},{"k":"海","kr":"해","meaning":"바다","clusters":[{"r":"かい","words":[{"w":"海外","reading":"かいがい","kr":"해외"},{"w":"航海","reading":"こうかい","kr":"항해"}]}],"count":2},{"k":"快","kr":"쾌","meaning":"쾌하다","clusters":[{"r":"かい","words":[{"w":"快適","reading":"かいてき","kr":"쾌적"},{"w":"愉快","reading":"ゆかい","kr":"유쾌"}]}],"count":2},{"k":"回","kr":"회","meaning":"돌다","clusters":[{"r":"かい","words":[{"w":"回復","reading":"かいふく","kr":"회복"},{"w":"今回","reading":"こんかい","kr":"금회"}]}],"count":2},{"k":"具","kr":"구","meaning":"갖추다","clusters":[{"r":"ぐ","words":[{"w":"家具","reading":"かぐ","kr":"가구"},{"w":"具体","reading":"ぐたい","kr":"구체"}]}],"count":2},{"k":"減","kr":"감","meaning":"덜다","clusters":[{"r":"げん","words":[{"w":"加減","reading":"かげん","kr":"가감"},{"w":"減少","reading":"げんしょう","kr":"감소"}]}],"count":2},{"k":"歌","kr":"가","meaning":"노래","clusters":[{"r":"か","words":[{"w":"歌手","reading":"かしゅ","kr":"가수"},{"w":"歌謡","reading":"かよう","kr":"가요"}]}],"count":2},{"k":"課","kr":"과","meaning":"매기다","clusters":[{"r":"か","words":[{"w":"課程","reading":"かてい","kr":"과정"},{"w":"課題","reading":"かだい","kr":"과제"}]}],"count":2},{"k":"科","kr":"과","meaning":"과목","clusters":[{"r":"か","words":[{"w":"科目","reading":"かもく","kr":"과목"},{"w":"教科書","reading":"きょうかしょ","kr":"교과서"}]}],"count":2},{"k":"謡","kr":"요","meaning":"노래","clusters":[{"r":"よう","words":[{"w":"歌謡","reading":"かよう","kr":"가요"},{"w":"童謡","reading":"どうよう","kr":"동요"}]}],"count":2},{"k":"境","kr":"경","meaning":"지경","clusters":[{"r":"きょう","words":[{"w":"環境","reading":"かんきょう","kr":"환경"},{"w":"国境","reading":"こっきょう","kr":"국경"}]}],"count":2},{"k":"歓","kr":"환","meaning":"기뻐하다","clusters":[{"r":"かん","words":[{"w":"歓迎","reading":"かんげい","kr":"환영"},{"w":"歓声","reading":"かんせい","kr":"환성"}]}],"count":2},{"k":"管","kr":"관","meaning":"맡다","clusters":[{"r":"かん","words":[{"w":"管理","reading":"かんり","kr":"관리"},{"w":"血管","reading":"けっかん","kr":"혈관"}]}],"count":2},{"k":"械","kr":"계","meaning":"기계","clusters":[{"r":"かい","words":[{"w":"機械","reading":"きかい","kr":"기계"},{"w":"器械","reading":"きかい","kr":"기계"}]}],"count":2},{"k":"寄","kr":"기","meaning":"부치다","clusters":[{"r":"き","words":[{"w":"寄付","reading":"きふ","kr":"기부"}]},{"r":null,"words":[{"w":"年寄","reading":"としより","kr":"연기"}]}],"count":2},{"k":"付","kr":"부","meaning":"붙이다","clusters":[{"r":"ふ","words":[{"w":"寄付","reading":"きふ","kr":"기부"}]},{"r":"づけ","words":[{"w":"日付","reading":"ひづけ","kr":"일부"}]}],"count":2},{"k":"妙","kr":"묘","meaning":"묘하다","clusters":[{"r":"みょう","words":[{"w":"奇妙","reading":"きみょう","kr":"기묘"},{"w":"微妙","reading":"びみょう","kr":"미묘"}]}],"count":2},{"k":"吸","kr":"흡","meaning":"마시다","clusters":[{"r":"きゅう","words":[{"w":"吸収","reading":"きゅうしゅう","kr":"흡수"},{"w":"呼吸","reading":"こきゅう","kr":"호흡"}]}],"count":2},{"k":"儀","kr":"의","meaning":"거동","clusters":[{"r":"ぎ","words":[{"w":"行儀","reading":"ぎょうぎ","kr":"행의"},{"w":"礼儀","reading":"れいぎ","kr":"예의"}]}],"count":2},{"k":"共","kr":"공","meaning":"함께","clusters":[{"r":"きょう","words":[{"w":"共通","reading":"きょうつう","kr":"공통"},{"w":"共同","reading":"きょうどう","kr":"공동"}]}],"count":2},{"k":"許","kr":"허","meaning":"허락하다","clusters":[{"r":"きょ","words":[{"w":"許可","reading":"きょか","kr":"허가"},{"w":"免許","reading":"めんきょ","kr":"면허"}]}],"count":2},{"k":"禁","kr":"금","meaning":"금하다","clusters":[{"r":"きん","words":[{"w":"禁煙","reading":"きんえん","kr":"금연"},{"w":"禁止","reading":"きんし","kr":"금지"}]}],"count":2},{"k":"止","kr":"지","meaning":"그치다","clusters":[{"r":"し","words":[{"w":"禁止","reading":"きんし","kr":"금지"},{"w":"中止","reading":"ちゅうし","kr":"중지"}]}],"count":2},{"k":"銭","kr":"전","meaning":"돈","clusters":[{"r":"せん","words":[{"w":"金銭","reading":"きんせん","kr":"금전"}]},{"r":"ぜに","words":[{"w":"小銭","reading":"こぜに","kr":"소전"}]}],"count":2},{"k":"区","kr":"구","meaning":"구역","clusters":[{"r":"く","words":[{"w":"区別","reading":"くべつ","kr":"구별"},{"w":"地区","reading":"ちく","kr":"지구"}]}],"count":2},{"k":"別","kr":"별","meaning":"다르다","clusters":[{"r":"べつ","words":[{"w":"区別","reading":"くべつ","kr":"구별"},{"w":"差別","reading":"さべつ","kr":"차별"}]}],"count":2},{"k":"組","kr":"조","meaning":"짜다","clusters":[{"r":"くみ","words":[{"w":"組合","reading":"くみあい","kr":"조합"}]},{"r":"そ","words":[{"w":"組織","reading":"そしき","kr":"조직"}]}],"count":2},{"k":"労","kr":"로","meaning":"일하다","clusters":[{"r":"ろう","words":[{"w":"苦労","reading":"くろう","kr":"고로"},{"w":"労働","reading":"ろうどう","kr":"노동"}]}],"count":2},{"k":"敬","kr":"경","meaning":"공경하다","clusters":[{"r":"けい","words":[{"w":"敬意","reading":"けいい","kr":"경의"},{"w":"尊敬","reading":"そんけい","kr":"존경"}]}],"count":2},{"k":"向","kr":"향","meaning":"향하다","clusters":[{"r":"こう","words":[{"w":"傾向","reading":"けいこう","kr":"경향"},{"w":"方向","reading":"ほうこう","kr":"방향"}]}],"count":2},{"k":"契","kr":"계","meaning":"맺다","clusters":[{"r":"けい","words":[{"w":"契約","reading":"けいやく","kr":"계약"},{"w":"契機","reading":"けいき","kr":"계기"}]}],"count":2},{"k":"由","kr":"유","meaning":"말미암다","clusters":[{"r":"ゆ","words":[{"w":"経由","reading":"けいゆ","kr":"경유"}]},{"r":"ゆう","words":[{"w":"不自由","reading":"ふじゆう","kr":"부자유"}]}],"count":2},{"k":"劇","kr":"극","meaning":"연극","clusters":[{"r":"げき","words":[{"w":"劇場","reading":"げきじょう","kr":"극장"},{"w":"悲劇","reading":"ひげき","kr":"비극"}]}],"count":2},{"k":"血","kr":"혈","meaning":"피","clusters":[{"r":"けつ","words":[{"w":"血液","reading":"けつえき","kr":"혈액"}]},{"r":"けっ","words":[{"w":"血管","reading":"けっかん","kr":"혈관"}]}],"count":2},{"k":"果","kr":"과","meaning":"열매","clusters":[{"r":"か","words":[{"w":"結果","reading":"けっか","kr":"결과"},{"w":"効果","reading":"こうか","kr":"효과"}]}],"count":2},{"k":"席","kr":"석","meaning":"자리","clusters":[{"r":"せき","words":[{"w":"欠席","reading":"けっせき","kr":"결석"},{"w":"座席","reading":"ざせき","kr":"좌석"}]}],"count":2},{"k":"検","kr":"검","meaning":"검사하다","clusters":[{"r":"けん","words":[{"w":"検査","reading":"けんさ","kr":"검사"},{"w":"検討","reading":"けんとう","kr":"검토"}]}],"count":2},{"k":"建","kr":"건","meaning":"세우다","clusters":[{"r":"けん","words":[{"w":"建設","reading":"けんせつ","kr":"건설"},{"w":"建築","reading":"けんちく","kr":"건축"}]}],"count":2},{"k":"効","kr":"효","meaning":"본받다","clusters":[{"r":"こう","words":[{"w":"効果","reading":"こうか","kr":"효과"},{"w":"有効","reading":"ゆうこう","kr":"유효"}]}],"count":2},{"k":"航","kr":"항","meaning":"배","clusters":[{"r":"こう","words":[{"w":"航空","reading":"こうくう","kr":"항공"},{"w":"航海","reading":"こうかい","kr":"항해"}]}],"count":2},{"k":"攻","kr":"공","meaning":"치다","clusters":[{"r":"こう","words":[{"w":"攻撃","reading":"こうげき","kr":"공격"},{"w":"専攻","reading":"せんこう","kr":"전공"}]}],"count":2},{"k":"校","kr":"교","meaning":"학교","clusters":[{"r":"こう","words":[{"w":"校舎","reading":"こうしゃ","kr":"교사"},{"w":"転校","reading":"てんこう","kr":"전교"}]}],"count":2},{"k":"構","kr":"구","meaning":"얽다","clusters":[{"r":"こう","words":[{"w":"構成","reading":"こうせい","kr":"구성"},{"w":"機構","reading":"きこう","kr":"기구"}]}],"count":2},{"k":"補","kr":"보","meaning":"기울다","clusters":[{"r":"ほ","words":[{"w":"候補","reading":"こうほ","kr":"후보"},{"w":"補償","reading":"ほしょう","kr":"보상"}]}],"count":2},{"k":"故","kr":"고","meaning":"연고","clusters":[{"r":"こ","words":[{"w":"故郷","reading":"こきょう","kr":"고향"},{"w":"故人","reading":"こじん","kr":"고인"}]}],"count":2},{"k":"包","kr":"포","meaning":"싸다","clusters":[{"r":"ほう","words":[{"w":"包装","reading":"ほうそう","kr":"포장"}]},{"r":null,"words":[{"w":"小包","reading":"こづつみ","kr":"소포"}]}],"count":2},{"k":"麦","kr":"맥","meaning":"보리","clusters":[{"r":"むぎ","words":[{"w":"小麦","reading":"こむぎ","kr":"소맥"}]},{"r":null,"words":[{"w":"蕎麦","reading":"そば","kr":"교맥"}]}],"count":2},{"k":"屋","kr":"옥","meaning":"집","clusters":[{"r":"や","words":[{"w":"小屋","reading":"こや","kr":"소옥"},{"w":"屋根","reading":"やね","kr":"옥근"}]}],"count":2},{"k":"混","kr":"혼","meaning":"섞다","clusters":[{"r":"こん","words":[{"w":"混雑","reading":"こんざつ","kr":"혼잡"},{"w":"混乱","reading":"こんらん","kr":"혼란"}]}],"count":2},{"k":"婚","kr":"혼","meaning":"혼인","clusters":[{"r":"こん","words":[{"w":"婚約","reading":"こんやく","kr":"혼약"},{"w":"離婚","reading":"りこん","kr":"이혼"}]}],"count":2},{"k":"満","kr":"만","meaning":"가득차다","clusters":[{"r":"まん","words":[{"w":"満足","reading":"まんぞく","kr":"만족"},{"w":"不満","reading":"ふまん","kr":"불만"}]}],"count":2},{"k":"土","kr":"토","meaning":"흙","clusters":[{"r":"と","words":[{"w":"土地","reading":"とち","kr":"토지"}]},{"r":null,"words":[{"w":"土産","reading":"みやげ","kr":"토산"}]}],"count":2},{"k":"迷","kr":"미","meaning":"미혹하다","clusters":[{"r":"めい","words":[{"w":"迷惑","reading":"めいわく","kr":"미혹"}]},{"r":null,"words":[{"w":"迷子","reading":"まいご","kr":"미자"}]}],"count":2},{"k":"接","kr":"접","meaning":"닿다","clusters":[{"r":"せつ","words":[{"w":"面接","reading":"めんせつ","kr":"면접"},{"w":"直接","reading":"ちょくせつ","kr":"직접"}]}],"count":2},{"k":"倒","kr":"도","meaning":"넘어지다","clusters":[{"r":"どう","words":[{"w":"面倒","reading":"めんどう","kr":"면도"}]},{"r":"とう","words":[{"w":"倒産","reading":"とうさん","kr":"도산"}]}],"count":2},{"k":"音","kr":"음","meaning":"소리","clusters":[{"r":"おと","words":[{"w":"物音","reading":"ものおと","kr":"물음"}]},{"r":"おん","words":[{"w":"騒音","reading":"そうおん","kr":"소음"}]}],"count":2},{"k":"句","kr":"구","meaning":"글귀","clusters":[{"r":"く","words":[{"w":"文句","reading":"もんく","kr":"문구"},{"w":"語句","reading":"ごく","kr":"어구"}]}],"count":2},{"k":"根","kr":"근","meaning":"뿌리","clusters":[{"r":"ね","words":[{"w":"屋根","reading":"やね","kr":"옥근"},{"w":"羽根","reading":"はね","kr":"우근"}]}],"count":2},{"k":"陽","kr":"양","meaning":"볕","clusters":[{"r":"よう","words":[{"w":"陽気","reading":"ようき","kr":"양기"},{"w":"太陽","reading":"たいよう","kr":"태양"}]}],"count":2},{"k":"夜","kr":"야","meaning":"밤","clusters":[{"r":"よ","words":[{"w":"夜中","reading":"よなか","kr":"야중"}]},{"r":"や","words":[{"w":"徹夜","reading":"てつや","kr":"철야"}]}],"count":2},{"k":"余","kr":"여","meaning":"남다","clusters":[{"r":"よ","words":[{"w":"余分","reading":"よぶん","kr":"여분"},{"w":"余裕","reading":"よゆう","kr":"여유"}]}],"count":2},{"k":"口","kr":"구","meaning":"입","clusters":[{"r":"こう","words":[{"w":"利口","reading":"りこう","kr":"이구"}]},{"r":"くち","words":[{"w":"悪口","reading":"わるくち","kr":"악구"}]}],"count":2},{"k":"留","kr":"류","meaning":"머무르다","clusters":[{"r":"りゅう","words":[{"w":"留学","reading":"りゅうがく","kr":"유학"},{"w":"停留所","reading":"ていりゅうじょ","kr":"정류소"}]}],"count":2},{"k":"続","kr":"속","meaning":"잇다","clusters":[{"r":"ぞく","words":[{"w":"連続","reading":"れんぞく","kr":"연속"},{"w":"相続","reading":"そうぞく","kr":"상속"}]}],"count":2},{"k":"刊","kr":"간","meaning":"새기다","clusters":[{"r":"かん","words":[{"w":"刊行","reading":"かんこう","kr":"간행"},{"w":"季刊","reading":"きかん","kr":"계간"}]}],"count":2},{"k":"声","kr":"성","meaning":"소리","clusters":[{"r":"せい","words":[{"w":"歓声","reading":"かんせい","kr":"환성"},{"w":"声明","reading":"せいめい","kr":"성명"}]}],"count":2},{"k":"官","kr":"관","meaning":"벼슬","clusters":[{"r":"かん","words":[{"w":"官僚","reading":"かんりょう","kr":"관료"},{"w":"器官","reading":"きかん","kr":"기관"}]}],"count":2},{"k":"僚","kr":"료","meaning":"동료","clusters":[{"r":"りょう","words":[{"w":"官僚","reading":"かんりょう","kr":"관료"},{"w":"同僚","reading":"どうりょう","kr":"동료"}]}],"count":2},{"k":"規","kr":"규","meaning":"법","clusters":[{"r":"き","words":[{"w":"規制","reading":"きせい","kr":"규제"},{"w":"正規","reading":"せいき","kr":"정규"}]}],"count":2},{"k":"洗","kr":"세","meaning":"씻다","clusters":[{"r":"せん","words":[{"w":"洗剤","reading":"せんざい","kr":"세제"},{"w":"水洗","reading":"すいせん","kr":"수세"}]}],"count":2},{"k":"先","kr":"선","meaning":"먼저","clusters":[{"r":"せん","words":[{"w":"先日","reading":"せんじつ","kr":"선일"},{"w":"先行","reading":"せんこう","kr":"선행"}]}],"count":2},{"k":"操","kr":"조","meaning":"잡다","clusters":[{"r":"そう","words":[{"w":"操作","reading":"そうさ","kr":"조작"},{"w":"操縦","reading":"そうじゅう","kr":"조종"}]}],"count":2},{"k":"尊","kr":"존","meaning":"높다","clusters":[{"r":"そん","words":[{"w":"尊敬","reading":"そんけい","kr":"존경"},{"w":"尊重","reading":"そんちょう","kr":"존중"}]}],"count":2},{"k":"存","kr":"존","meaning":"있다","clusters":[{"r":"そん","words":[{"w":"存在","reading":"そんざい","kr":"존재"}]},{"r":"ぞん","words":[{"w":"保存","reading":"ほぞん","kr":"보존"}]}],"count":2},{"k":"照","kr":"조","meaning":"비추다","clusters":[{"r":"しょう","words":[{"w":"対照","reading":"たいしょう","kr":"대조"},{"w":"照明","reading":"しょうめい","kr":"조명"}]}],"count":2},{"k":"戦","kr":"전","meaning":"싸우다","clusters":[{"r":"せん","words":[{"w":"大戦","reading":"たいせん","kr":"대전"},{"w":"挑戦","reading":"ちょうせん","kr":"도전"}]}],"count":2},{"k":"統","kr":"통","meaning":"거느리다","clusters":[{"r":"とう","words":[{"w":"大統領","reading":"だいとうりょう","kr":"대통령"},{"w":"伝統","reading":"でんとう","kr":"전통"}]}],"count":2},{"k":"部","kr":"부","meaning":"떼","clusters":[{"r":"ぶ","words":[{"w":"大部分","reading":"だいぶぶん","kr":"대부분"},{"w":"部分","reading":"ぶぶん","kr":"부분"}]}],"count":2},{"k":"立","kr":"립","meaning":"서다","clusters":[{"r":"た","words":[{"w":"立場","reading":"たちば","kr":"입장"}]},{"r":"りつ","words":[{"w":"独立","reading":"どくりつ","kr":"독립"}]}],"count":2},{"k":"注","kr":"주","meaning":"물대다","clusters":[{"r":"ちゅう","words":[{"w":"注目","reading":"ちゅうもく","kr":"주목"},{"w":"注文","reading":"ちゅうもん","kr":"주문"}]}],"count":2},{"k":"提","kr":"제","meaning":"끌다","clusters":[{"r":"てい","words":[{"w":"提案","reading":"ていあん","kr":"제안"},{"w":"提出","reading":"ていしゅつ","kr":"제출"}]}],"count":2},{"k":"抗","kr":"항","meaning":"겨루다","clusters":[{"r":"こう","words":[{"w":"抵抗","reading":"ていこう","kr":"저항"},{"w":"反抗","reading":"はんこう","kr":"반항"}]}],"count":2},{"k":"停","kr":"정","meaning":"머무르다","clusters":[{"r":"てい","words":[{"w":"停電","reading":"ていでん","kr":"정전"},{"w":"停留所","reading":"ていりゅうじょ","kr":"정류소"}]}],"count":2},{"k":"電","kr":"전","meaning":"번개","clusters":[{"r":"でん","words":[{"w":"停電","reading":"ていでん","kr":"정전"},{"w":"電子","reading":"でんし","kr":"전자"}]}],"count":2},{"k":"徹","kr":"철","meaning":"통하다","clusters":[{"r":"てっ","words":[{"w":"徹底","reading":"てってい","kr":"철저"}]},{"r":"てつ","words":[{"w":"徹夜","reading":"てつや","kr":"철야"}]}],"count":2},{"k":"天","kr":"천","meaning":"하늘","clusters":[{"r":"てん","words":[{"w":"天候","reading":"てんこう","kr":"천후"},{"w":"天然","reading":"てんねん","kr":"천연"}]}],"count":2},{"k":"得","kr":"득","meaning":"얻다","clusters":[{"r":"とく","words":[{"w":"得意","reading":"とくい","kr":"득의"},{"w":"納得","reading":"なっとく","kr":"납득"}]}],"count":2},{"k":"熱","kr":"열","meaning":"덥다","clusters":[{"r":"ねっ","words":[{"w":"熱帯","reading":"ねったい","kr":"열대"},{"w":"熱中","reading":"ねっちゅう","kr":"열중"}]}],"count":2},{"k":"博","kr":"박","meaning":"넓다","clusters":[{"r":"はく","words":[{"w":"博物館","reading":"はくぶつかん","kr":"박물관"}]},{"r":null,"words":[{"w":"博士","reading":"はかせ","kr":"박사"}]}],"count":2},{"k":"士","kr":"사","meaning":"선비","clusters":[{"r":"し","words":[{"w":"同士","reading":"どうし","kr":"동사"}]},{"r":null,"words":[{"w":"博士","reading":"はかせ","kr":"박사"}]}],"count":2},{"k":"犯","kr":"범","meaning":"범하다","clusters":[{"r":"はん","words":[{"w":"犯罪","reading":"はんざい","kr":"범죄"},{"w":"犯人","reading":"はんにん","kr":"범인"}]}],"count":2},{"k":"非","kr":"비","meaning":"아니다","clusters":[{"r":"ひ","words":[{"w":"非常","reading":"ひじょう","kr":"비상"},{"w":"非行","reading":"ひこう","kr":"비행"}]}],"count":2},{"k":"批","kr":"비","meaning":"비평하다","clusters":[{"r":"ひ","words":[{"w":"批判","reading":"ひはん","kr":"비판"},{"w":"批評","reading":"ひひょう","kr":"비평"}]}],"count":2},{"k":"夫","kr":"부","meaning":"지아비","clusters":[{"r":"ふう","words":[{"w":"夫婦","reading":"ふうふ","kr":"부부"}]},{"r":"ふ","words":[{"w":"夫人","reading":"ふじん","kr":"부인"}]}],"count":2},{"k":"野","kr":"야","meaning":"들","clusters":[{"r":"や","words":[{"w":"分野","reading":"ぶんや","kr":"분야"},{"w":"野党","reading":"やとう","kr":"야당"}]}],"count":2},{"k":"変","kr":"변","meaning":"변하다","clusters":[{"r":"へん","words":[{"w":"変化","reading":"へんか","kr":"변화"},{"w":"変更","reading":"へんこう","kr":"변경"}]}],"count":2},{"k":"磁","kr":"자","meaning":"자석","clusters":[{"r":"じ","words":[{"w":"磁気","reading":"じき","kr":"자기"},{"w":"磁器","reading":"じき","kr":"자기"}]}],"count":2}]
+</script>
+<script>
+const DATA = JSON.parse(document.getElementById("rawdata").textContent);
+
+let memorized = {};
+try {
+  memorized = JSON.parse(localStorage.getItem("n3kanji_memorized") || "{}");
+} catch(e) { memorized = {}; }
+
+function save() {
+  try { localStorage.setItem("n3kanji_memorized", JSON.stringify(memorized)); } catch(e) {}
+}
+
+function highlightKanji(word, kanji) {
+  return word.split("").map(ch => ch === kanji ? '<span class="hl">'+ch+'</span>' : ch).join("");
+}
+
+let sortMode = "freq"; // "freq" | "alpha"
+
+function sortedData() {
+  const arr = DATA.slice();
+  if (sortMode === "alpha") {
+    arr.sort((a, b) => a.k.localeCompare(b.k, "ko"));
+  }
+  return arr;
+}
+
+function filterGroup(group, q) {
+  // returns filtered clusters (each with filtered words), or null if nothing matches
+  const kanjiMatches = q && group.k.toLowerCase().includes(q);
+  const clusters = [];
+  group.clusters.forEach(cl => {
+    const readingMatches = q && cl.r && cl.r.toLowerCase().includes(q);
+    const words = cl.words.filter(w => {
+      if (!q) return true;
+      if (kanjiMatches || readingMatches) return true;
+      return w.w.toLowerCase().includes(q) ||
+             w.reading.toLowerCase().includes(q) ||
+             w.kr.toLowerCase().includes(q);
+    });
+    if (words.length) clusters.push({ r: cl.r, words });
+  });
+  return clusters;
+}
+
+function render(filter) {
+  const q = (filter || "").trim().toLowerCase();
+  const container = document.getElementById("groups");
+  container.innerHTML = "";
+  let anyVisible = false;
+
+  sortedData().forEach(group => {
+    const clusters = filterGroup(group, q);
+    if (q && clusters.length === 0) return;
+    anyVisible = true;
+
+    const groupEl = document.createElement("div");
+    groupEl.className = "group";
+
+    const stamp = document.createElement("div");
+    stamp.className = "stampbox jp";
+    stamp.textContent = group.k;
+    groupEl.appendChild(stamp);
+
+    const right = document.createElement("div");
+
+    const head = document.createElement("div");
+    head.className = "grouphead";
+    head.innerHTML = '<span class="label">음: '+group.kr+' <span class="meaning">('+(group.meaning||'')+')</span></span><span class="count">'+group.count+'개 단어</span>';
+    right.appendChild(head);
+
+    const pills = document.createElement("div");
+    pills.className = "readingpills";
+    group.clusters.forEach(cl => {
+      const span = document.createElement("span");
+      span.className = "pill jp";
+      span.textContent = cl.r ? cl.r : "기타";
+      pills.appendChild(span);
+    });
+    right.appendChild(pills);
+
+    clusters.forEach(cl => {
+      const clusterEl = document.createElement("div");
+      clusterEl.className = "cluster";
+      const ch = document.createElement("div");
+      ch.className = "clusterhead";
+      ch.innerHTML = (cl.r ? '<span class="jp">'+cl.r+'</span>' : '기타(불규칙 읽기)') +
+                      '<span class="n">'+cl.words.length+'</span>';
+      clusterEl.appendChild(ch);
+
+      const table = document.createElement("table");
+      table.className = "words";
+      cl.words.forEach(w => {
+        const tr = document.createElement("tr");
+        if (memorized[w.w]) tr.classList.add("done");
+        tr.innerHTML =
+          '<td class="wordcell jp">'+highlightKanji(w.w, group.k)+'</td>' +
+          '<td class="readingcell jp">'+w.reading+'</td>' +
+          '<td class="meaningcell">'+w.kr+'</td>' +
+          '<td class="checkcell"><input type="checkbox" '+(memorized[w.w] ? "checked" : "")+' data-word="'+w.w+'"></td>';
+        table.appendChild(tr);
+      });
+      clusterEl.appendChild(table);
+      right.appendChild(clusterEl);
+    });
+
+    groupEl.appendChild(right);
+    container.appendChild(groupEl);
+  });
+
+  document.getElementById("emptyMsg").style.display = anyVisible ? "none" : "block";
+  updateStats();
+}
+
+function updateStats() {
+  const allWords = new Set();
+  DATA.forEach(g => g.clusters.forEach(cl => cl.words.forEach(w => allWords.add(w.w))));
+  const total = allWords.size;
+  let done = 0;
+  allWords.forEach(w => { if (memorized[w]) done++; });
+  document.getElementById("totalCount").textContent = total;
+  document.getElementById("doneCount").textContent = done;
+}
+
+document.getElementById("groups").addEventListener("change", e => {
+  if (e.target.matches('input[type="checkbox"]')) {
+    const word = e.target.dataset.word;
+    memorized[word] = e.target.checked;
+    save();
+    render(document.getElementById("search").value);
+  }
+});
+
+document.getElementById("search").addEventListener("input", e => {
+  render(e.target.value);
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (confirm("체크한 암기 기록을 모두 초기화할까요?")) {
+    memorized = {};
+    save();
+    render(document.getElementById("search").value);
+  }
+});
+
+document.getElementById("sortBtn").addEventListener("click", (e) => {
+  sortMode = sortMode === "freq" ? "alpha" : "freq";
+  e.target.textContent = sortMode === "freq" ? "가나다순 보기" : "단어 많은 순 보기";
+  render(document.getElementById("search").value);
+});
+
+render("");
+</script>
+
+<script>
+/* ---------------- tab switching ---------------- */
+document.querySelectorAll(".tabbtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tabbtn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const target = btn.dataset.tab;
+    document.getElementById("tab-kanji").hidden = target !== "kanji";
+    document.getElementById("tab-theme").hidden = target !== "theme";
+  });
+});
+
+/* ---------------- theme data ---------------- */
+const BODY_PARTS = [
+  ["頭","あたま","머리"], ["肩","かた","어깨"], ["膝","ひざ","무릎"], ["腕","うで","팔"],
+  ["手","て","손"], ["指","ゆび","손가락"], ["爪","つめ","손톱・발톱"], ["足","あし","다리・발"],
+  ["首","くび","목"], ["喉","のど","목구멍"], ["胸","むね","가슴"], ["お腹","おなか","배"],
+  ["背中","せなか","등"], ["腰","こし","허리"], ["顔","かお","얼굴"], ["目","め","눈"],
+  ["鼻","はな","코"], ["口","くち","입"], ["耳","みみ","귀"], ["歯","は","이(치아)"],
+  ["舌","した","혀"], ["髪の毛","かみのけ","머리카락"], ["眉","まゆ","눈썹"], ["頬","ほお","볼"],
+  ["顎","あご","턱"]
+];
+
+const WEEKDAYS = [
+  ["月曜日","げつようび","월요일"], ["火曜日","かようび","화요일"], ["水曜日","すいようび","수요일"],
+  ["木曜日","もくようび","목요일"], ["金曜日","きんようび","금요일"], ["土曜日","どようび","토요일"],
+  ["日曜日","にちようび","일요일"], ["何曜日","なんようび","무슨 요일"]
+];
+
+const SEASON_TIME = [
+  ["春","はる","봄"], ["夏","なつ","여름"], ["秋","あき","가을"], ["冬","ふゆ","겨울"],
+  ["朝","あさ","아침"], ["昼","ひる","낮・점심"], ["夕方","ゆうがた","저녁(해질녘)"],
+  ["夜","よる","밤"], ["夜中","よなか","한밤중"], ["明け方","あけがた","새벽"]
+];
+
+const ADVERBS = {
+  "순서・결론": [
+    ["ついに","ついに","마침내"], ["とうとう","とうとう","결국・마침내"], ["やっと","やっと","겨우・드디어"],
+    ["結局","けっきょく","결국"], ["まず","まず","우선・먼저"], ["次に","つぎに","다음으로"],
+    ["最後に","さいごに","마지막으로"]
+  ],
+  "접속 표현": [
+    ["だから","だから","그러니까・그래서"], ["それで","それで","그래서"], ["そのため","そのため","그 때문에"],
+    ["つまり","つまり","즉"], ["ところが","ところが","그런데(반전)"], ["しかし","しかし","하지만"],
+    ["けれど(も)","けれど(も)","그렇지만"]
+  ],
+  "확신・추측": [
+    ["絶対に","ぜったいに","절대로"], ["きっと","きっと","분명히"], ["たぶん","たぶん","아마"],
+    ["もちろん","もちろん","물론"], ["さすが","さすが","과연・역시"], ["やはり","やはり","역시"],
+    ["やっぱり","やっぱり","역시(회화체)"]
+  ],
+  "정도": [
+    ["かなり","かなり","꽤"], ["けっこう","けっこう","제법・꽤"], ["非常に","ひじょうに","매우"],
+    ["あまり ~ない","あまり","별로 ~않다"], ["ほとんど","ほとんど","거의"], ["全然 ~ない","ぜんぜん","전혀 ~않다"],
+    ["案外","あんがい","의외로"]
+  ],
+  "빈도": [
+    ["いつも","いつも","항상"], ["たいてい","たいてい","대개"], ["たまに","たまに","가끔"],
+    ["めったに ~ない","めったに","좀처럼 ~않다"], ["なかなか ~ない","なかなか","좀처럼 ~않다"]
+  ],
+  "상태 변화": [
+    ["だんだん","だんだん","점점"], ["ますます","ますます","점점 더"], ["どんどん","どんどん","계속・자꾸"],
+    ["すっかり","すっかり","완전히"], ["だいぶ","だいぶ","꽤・상당히"]
+  ],
+  "기타 자주 쓰는 부사": [
+    ["せっかく","せっかく","모처럼"], ["わざわざ","わざわざ","일부러"], ["かえって","かえって","오히려"],
+    ["むしろ","むしろ","차라리"], ["どうしても","どうしても","아무리 해도"], ["なるべく","なるべく","가능한 한"],
+    ["できるだけ","できるだけ","할 수 있는 한"], ["実は","じつは","사실은"], ["実際に","じっさいに","실제로"]
+  ],
+  "갑자기・순식간에": [
+    ["急に","きゅうに","갑자기"], ["突然","とつぜん","갑자기・돌연"], ["いきなり","いきなり","다짜고짜・갑자기"],
+    ["思わず","おもわず","무심코・나도 모르게"], ["早速","さっそく","즉시・바로"], ["一気に","いっきに","단숨에"],
+    ["次第に","しだいに","점차"], ["徐々に","じょじょに","서서히"]
+  ],
+  "한정・최소": [
+    ["決して ~ない","けっして","결코 ~않다"], ["せめて","せめて","적어도"], ["たった","たった","겨우・단지"],
+    ["ただ","ただ","단지・오직"], ["わずかに","わずかに","약간・근소하게"], ["多少","たしょう","다소・약간"],
+    ["せいぜい","せいぜい","기껏해야"], ["少しも ~ない","すこしも","조금도 ~않다"], ["別に ~ない","べつに","딱히 ~않다"]
+  ],
+  "회화에서 자주 쓰는 부사": [
+    ["とにかく","とにかく","어쨌든"], ["ともかく","ともかく","어쨌든"], ["一応","いちおう","일단・우선"],
+    ["とりあえず","とりあえず","우선・일단"], ["相変わらず","あいかわらず","여전히"], ["なんとか","なんとか","그럭저럭・어떻게든"],
+    ["どうにか","どうにか","어떻게든"], ["どうも","どうも","아무래도・왠지"], ["なんだか","なんだか","왠지"],
+    ["なぜか","なぜか","왠지・어쩐지"], ["なんとなく","なんとなく","왠지 모르게"], ["久しぶりに","ひさしぶりに","오랜만에"],
+    ["しばらく","しばらく","잠시・한동안"], ["特に","とくに","특히"], ["もしかしたら","もしかしたら","혹시"],
+    ["まさか","まさか","설마"], ["一体","いったい","도대체"]
+  ],
+};
+
+const ANTONYM_VERBS = [
+  ["行く","いく","가다","来る","くる","오다"],
+  ["上る","のぼる","오르다","下りる","おりる","내리다"],
+  ["着る","きる","입다","脱ぐ","ぬぐ","벗다"],
+  ["座る","すわる","앉다","立つ","たつ","서다"],
+  ["開ける","あける","열다","閉める","しめる","닫다"],
+  ["入る","はいる","들어가다","出る","でる","나가다"],
+  ["乗る","のる","타다","降りる","おりる","내리다(탈것)"],
+  ["貸す","かす","빌려주다","借りる","かりる","빌리다"],
+  ["買う","かう","사다","売る","うる","팔다"],
+  ["教える","おしえる","가르치다","習う","ならう","배우다"],
+  ["勝つ","かつ","이기다","負ける","まける","지다"],
+  ["始まる","はじまる","시작되다","終わる","おわる","끝나다"],
+  ["押す","おす","밀다","引く","ひく","당기다"],
+  ["笑う","わらう","웃다","泣く","なく","울다"],
+  ["覚える","おぼえる","외우다","忘れる","わすれる","잊다"],
+  ["増える","ふえる","늘다","減る","へる","줄다"],
+  ["起きる","おきる","일어나다","寝る","ねる","자다"],
+  ["送る","おくる","배웅하다","迎える","むかえる","마중하다"],
+  ["壊す","こわす","부수다","直す","なおす","고치다"],
+];
+
+const ANTONYM_ADJ = [
+  ["重い","おもい","무겁다","軽い","かるい","가볍다"],
+  ["厚い","あつい","두껍다","薄い","うすい","얇다"],
+  ["硬い","かたい","딱딱하다","柔らかい","やわらかい","부드럽다"],
+  ["遠い","とおい","멀다","近い","ちかい","가깝다"],
+  ["深い","ふかい","깊다","浅い","あさい","얕다"],
+  ["広い","ひろい","넓다","狭い","せまい","좁다"],
+  ["多い","おおい","많다","少ない","すくない","적다"],
+  ["速い","はやい","빠르다","遅い","おそい","느리다・늦다"],
+  ["強い","つよい","강하다","弱い","よわい","약하다"],
+  ["暑い","あつい","덥다","寒い","さむい","춥다"],
+  ["熱い","あつい","뜨겁다","冷たい","つめたい","차갑다"],
+  ["新しい","あたらしい","새롭다","古い","ふるい","낡다・오래되다"],
+  ["明るい","あかるい","밝다","暗い","くらい","어둡다"],
+  ["簡単","かんたん","간단하다","複雑","ふくざつ","복잡하다"],
+  ["忙しい","いそがしい","바쁘다","暇","ひま","한가하다"],
+  ["上手","じょうず","잘하다","下手","へた","못하다"],
+  ["静か","しずか","조용하다","にぎやか","にぎやか","시끌벅적하다"],
+];
+
+const FAMILY = [
+  ["부모님","両親","りょうしん","ご両親","ごりょうしん"],
+  ["아버지","父","ちち","お父さん","おとうさん"],
+  ["어머니","母","はは","お母さん","おかあさん"],
+  ["형・오빠","兄","あに","お兄さん","おにいさん"],
+  ["누나・언니","姉","あね","お姉さん","おねえさん"],
+  ["남동생","弟","おとうと","弟さん","おとうとさん"],
+  ["여동생","妹","いもうと","妹さん","いもうとさん"],
+  ["할아버지","祖父","そふ","おじいさん","おじいさん"],
+  ["할머니","祖母","そぼ","おばあさん","おばあさん"],
+  ["남편","主人・夫","しゅじん・おっと","ご主人","ごしゅじん"],
+  ["아내","家内・妻","かない・つま","奥さん","おくさん"],
+  ["아이","子供","こども","お子さん","おこさん"],
+  ["가족","家族","かぞく","ご家族","ごかぞく"],
+];
+
+const IRREGULAR_DAYS = new Set([1,2,3,4,5,6,7,8,9,10,14,20,24]);
+const DAY_READINGS = {
+  1:"ついたち",2:"ふつか",3:"みっか",4:"よっか",5:"いつか",6:"むいか",7:"なのか",8:"ようか",
+  9:"ここのか",10:"とおか",11:"じゅういちにち",12:"じゅうににち",13:"じゅうさんにち",
+  14:"じゅうよっか",15:"じゅうごにち",16:"じゅうろくにち",17:"じゅうしちにち",18:"じゅうはちにち",
+  19:"じゅうくにち",20:"はつか",21:"にじゅういちにち",22:"にじゅうににち",23:"にじゅうさんにち",
+  24:"にじゅうよっか",25:"にじゅうごにち",26:"にじゅうろくにち",27:"にじゅうしちにち",
+  28:"にじゅうはちにち",29:"にじゅうくにち",30:"さんじゅうにち",31:"さんじゅういちにち"
+};
+
+const RELTIME_ROWS = ["전전","전","오늘","후","후후"];
+const RELTIME_COLS = ["일","주","월","년"];
+const RELTIME = {
+  "일": [["一昨日","おととい","그제"],["昨日","きのう","어제"],["今日","きょう","오늘"],["明日","あした","내일"],["明後日","あさって","모레"]],
+  "주": [["先々週","せんせんしゅう","지지난주"],["先週","せんしゅう","지난주"],["今週","こんしゅう","이번주"],["来週","らいしゅう","다음주"],["再来週","さらいしゅう","다다음주"]],
+  "월": [["先々月","せんせんげつ","지지난달"],["先月","せんげつ","지난달"],["今月","こんげつ","이번달"],["来月","らいげつ","다음달"],["再来月","さらいげつ","다다음달"]],
+  "년": [["一昨年","おととし","재작년"],["去年","きょねん","작년"],["今年","ことし","올해"],["来年","らいねん","내년"],["再来年","さらいねん","내후년"]],
+};
+
+/* ---------------- theme render helpers ---------------- */
+function themeKey(prefix, id) { return "theme:" + prefix + ":" + id; }
+
+function renderWordTable(elId, items, prefix) {
+  renderWordTableInto(document.getElementById(elId), items, prefix);
+}
+
+function renderAntonyms(elId, pairs, prefix) {
+  const container = document.getElementById(elId);
+  container.innerHTML = "";
+  pairs.forEach(([wa, ra, ma, wb, rb, mb]) => {
+    const key = themeKey(prefix, wa + "_" + wb);
+    const row = document.createElement("div");
+    row.className = "antonym-row" + (memorized[key] ? " done" : "");
+    row.dataset.key = key;
+    row.innerHTML =
+      '<div class="antonym-side"><span class="w jp">'+wa+'</span><span class="r jp">'+ra+'</span><span class="m">'+ma+'</span></div>' +
+      '<div class="antonym-mid">↔</div>' +
+      '<div class="antonym-side right"><span class="w jp">'+wb+'</span><span class="r jp">'+rb+'</span><span class="m">'+mb+'</span></div>';
+    row.addEventListener("click", () => {
+      memorized[key] = !memorized[key];
+      save();
+      row.classList.toggle("done", !!memorized[key]);
+    });
+    container.appendChild(row);
+  });
+}
+
+function renderDateGrid() {
+  const grid = document.getElementById("dateGrid");
+  grid.innerHTML = "";
+  for (let d = 1; d <= 31; d++) {
+    const key = themeKey("date", d);
+    const irregular = IRREGULAR_DAYS.has(d);
+    const cell = document.createElement("div");
+    cell.className = "datecell" + (irregular ? " irregular" : "") + (memorized[key] ? " done" : "");
+    cell.innerHTML = '<div class="num">'+d+'일</div><div class="r jp">'+DAY_READINGS[d]+'</div>';
+    cell.addEventListener("click", () => {
+      memorized[key] = !memorized[key];
+      save();
+      cell.classList.toggle("done", !!memorized[key]);
+    });
+    grid.appendChild(cell);
+  }
+}
+
+function renderRelTime() {
+  const table = document.getElementById("relTimeTable");
+  let html = "<thead><tr><th></th>" + RELTIME_COLS.map(c => "<th>"+c+"</th>").join("") + "</tr></thead><tbody>";
+  RELTIME_ROWS.forEach((rowLabel, i) => {
+    html += "<tr><td class=\"rowlabel\">"+rowLabel+"</td>";
+    RELTIME_COLS.forEach(col => {
+      const [w, r, m] = RELTIME[col][i];
+      html += '<td><span class="w jp">'+w+'</span><span class="r jp">'+r+'</span><span class="m">'+m+'</span></td>';
+    });
+    html += "</tr>";
+  });
+  html += "</tbody>";
+  table.innerHTML = html;
+  document.getElementById("everyNote").textContent =
+    "매일・매주・매달・매년 = 毎日(まいにち)・毎週(まいしゅう)・毎月(まいつき)・毎年(まいとし/まいねん)";
+}
+
+function renderFamily() {
+  const tbody = document.querySelector("#familyTable tbody");
+  tbody.innerHTML = "";
+  FAMILY.forEach(([role, hw, hr, rw, rr]) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      "<td>"+role+"</td>" +
+      '<td><span class="jpword">'+hw+'</span> <span class="r">('+hr+')</span></td>' +
+      '<td><span class="jpword">'+rw+'</span> <span class="r">('+rr+')</span></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function renderCategorized(elId, categories, prefix) {
+  const container = document.getElementById(elId);
+  container.innerHTML = "";
+  Object.keys(categories).forEach(cat => {
+    const block = document.createElement("div");
+    block.className = "cat-block";
+    const label = document.createElement("div");
+    label.className = "cat-label";
+    label.textContent = cat;
+    block.appendChild(label);
+    const table = document.createElement("table");
+    table.className = "words";
+    block.appendChild(table);
+    container.appendChild(block);
+    renderWordTableInto(table, categories[cat], prefix + ":" + cat);
+  });
+}
+
+function renderWordTableInto(table, items, prefix) {
+  table.innerHTML = "";
+  items.forEach(([w, r, m]) => {
+    const key = themeKey(prefix, w);
+    const tr = document.createElement("tr");
+    if (memorized[key]) tr.classList.add("done");
+    tr.innerHTML =
+      '<td class="wordcell jp">'+w+'</td>' +
+      '<td class="readingcell jp">'+r+'</td>' +
+      '<td class="meaningcell">'+m+'</td>' +
+      '<td class="checkcell"><input type="checkbox" '+(memorized[key] ? "checked" : "")+' data-key="'+key+'"></td>';
+    table.appendChild(tr);
+  });
+}
+
+document.addEventListener("change", e => {
+  if (e.target.matches('#tab-theme input[type="checkbox"]')) {
+    const key = e.target.dataset.key;
+    memorized[key] = e.target.checked;
+    save();
+    e.target.closest("tr").classList.toggle("done", e.target.checked);
+  }
+});
+
+renderWordTable("bodyTable", BODY_PARTS, "body");
+renderWordTable("weekdayTable", WEEKDAYS, "week");
+renderWordTable("seasonTable", SEASON_TIME, "season");
+renderAntonyms("antonymVerbs", ANTONYM_VERBS, "av");
+renderAntonyms("antonymAdj", ANTONYM_ADJ, "aa");
+renderDateGrid();
+renderRelTime();
+renderFamily();
+renderCategorized("adverbSection", ADVERBS, "adv");
+</script>
+</body>
+</html>
